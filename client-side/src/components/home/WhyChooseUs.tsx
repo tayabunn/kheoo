@@ -45,9 +45,9 @@ export const WhyChooseUs: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="bg-zinc-50 p-8 rounded-lg border border-zinc-200 hover:border-black transition-all group shadow-sm"
+                className="bg-zinc-50 p-8 rounded-none border border-zinc-200 hover:border-black transition-all group shadow-sm"
               >
-                <div className="w-12 h-12 rounded-md bg-black text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
+                <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-md">
                   <Icon className="w-6 h-6" />
                 </div>
                 <h3 className="text-base font-bold text-black mb-2 uppercase">{feat.title}</h3>

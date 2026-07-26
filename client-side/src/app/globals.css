@@ -23,7 +23,7 @@
   --muted: oklch(0.96 0 0);
   --muted-foreground: oklch(0.45 0 0);
   --border: oklch(0.9 0 0);
-  --radius: 0.75rem;
+  --radius: 0rem;
 }
 
 body {
@@ -31,6 +31,11 @@ body {
   color: #000000;
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+}
+
+/* Force zero border radius everywhere for sharp streetwear design */
+*, *::before, *::after {
+  border-radius: 0px !important;
 }
 
 /* Custom Scrollbar */
@@ -44,10 +49,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e4e4e7;
-  border-radius: 9999px;
+  background: #000000;
+  border-radius: 0px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #000000;
+  background: #3f3f46;
 }

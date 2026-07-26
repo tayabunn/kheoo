@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Coupon } from '../models/Coupon';
 
 export const validateCoupon = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -10,24 +11,39 @@ export const validateCoupon = async (req: Request, res: Response): Promise<void>
     }
 
     const cleanCode = (code as string).trim().toUpperCase();
+    const coupon = await Coupon.findOne({ code: cleanCode });
 
-    if (cleanCode === 'KHEOO10') {
-      const discountAmount = subtotal ? (subtotal * 10) / 100 : 0;
-      res.json({
-        success: true,
-        message: 'Coupon applied successfully',
-        data: {
-          code: 'KHEOO10',
-          discountAmount,
-          discountPercent: 10,
-        },
+    if (!coupon || !coupon.isActive) {
+      res.status(400).json({ success: false, message: 'Invalid or expired promo code' });
+      return;
+    }
+
+    if (subtotal && subtotal < coupon.minPurchase) {
+      res.status(400).json({
+        success: false,
+        message: `Coupon requires a minimum purchase of $${coupon.minPurchase}`,
       });
       return;
     }
 
-    res.status(400).json({ success: false, message: 'Invalid or expired promo code' });
+    let discountAmount = 0;
+    if (coupon.discountPercent) {
+      discountAmount = (subtotal * coupon.discountPercent) / 100;
+    } else if (coupon.discountAmount) {
+      discountAmount = coupon.discountAmount;
+    }
+
+    res.json({
+      success: true,
+      message: 'Coupon applied successfully',
+      data: {
+        code: coupon.code,
+        discountAmount,
+        discountPercent: coupon.discountPercent,
+      },
+    });
   } catch (error: any) {
-    console.error('Error validating coupon:', error);
+    console.error('Error validating coupon in MongoDB:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };

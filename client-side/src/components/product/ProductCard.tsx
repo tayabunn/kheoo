@@ -33,7 +33,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div
-      className="group relative bg-white text-black rounded-lg border border-zinc-200 overflow-hidden flex flex-col transition-all duration-300 hover:border-black hover:shadow-xl"
+      className="group relative bg-white text-black rounded-none border border-zinc-200 overflow-hidden flex flex-col transition-all duration-300 hover:border-black hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -51,12 +51,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none font-mono">
           {product.isNew && (
-            <span className="bg-black text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md shadow-md">
+            <span className="bg-black text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-none shadow-md">
               NEW DROP
             </span>
           )}
           {discount > 0 && (
-            <span className="bg-zinc-200 text-black border border-zinc-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md shadow-md">
+            <span className="bg-zinc-200 text-black border border-zinc-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none shadow-md">
               -{discount}%
             </span>
           )}
@@ -66,7 +66,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
           <button
             onClick={() => toggleWishlist(product)}
-            className={`p-2.5 rounded-lg border backdrop-blur-md transition-all ${
+            className={`p-2.5 rounded-none border backdrop-blur-md transition-all ${
               wishlisted
                 ? 'bg-black text-white border-black'
                 : 'bg-white/80 text-black border-zinc-300 hover:bg-white hover:border-black'
@@ -78,7 +78,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           <button
             onClick={() => openQuickView(product)}
-            className="p-2.5 bg-white/80 hover:bg-white text-black border border-zinc-300 hover:border-black rounded-lg backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
+            className="p-2.5 bg-white/80 hover:bg-white text-black border border-zinc-300 hover:border-black rounded-none backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
             title="Quick View"
           >
             <Eye className="w-4 h-4" />
@@ -87,14 +87,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Size Selector Overlay */}
         <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-white/95 backdrop-blur-md border border-zinc-200 p-2 rounded-lg flex items-center justify-between gap-1 font-mono shadow-md">
+          <div className="bg-white/95 backdrop-blur-md border border-zinc-200 p-2 rounded-none flex items-center justify-between gap-1 font-mono shadow-md">
             <span className="text-[10px] text-zinc-500 uppercase tracking-widest pl-1">Size:</span>
             <div className="flex gap-1">
               {['S', 'M', 'L', 'XL', 'XXL'].map((sz) => (
                 <button
                   key={sz}
                   onClick={() => setSelectedSize(sz)}
-                  className={`text-[10px] px-2 py-1 rounded-md transition-all ${
+                  className={`text-[10px] px-2 py-1 rounded-none transition-all ${
                     selectedSize === sz
                       ? 'bg-black text-white font-extrabold shadow'
                       : 'text-zinc-700 hover:bg-zinc-100'
@@ -143,7 +143,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           <button
             onClick={handleAddToCart}
-            className="bg-black hover:bg-zinc-800 text-white text-xs font-black px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition-all shadow-md active:scale-95"
+            className="bg-black hover:bg-zinc-800 text-white text-xs font-black px-3.5 py-2 rounded-none flex items-center gap-1.5 transition-all shadow-md active:scale-95 border border-black"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span>Add</span>

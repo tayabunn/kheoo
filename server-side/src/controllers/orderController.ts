@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-
-const MOCK_ORDERS: any[] = [];
+import { Order } from '../models/Order';
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -24,31 +23,35 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
 
     const orderNumber = `KHEOO-${Date.now().toString().slice(-6)}-${Math.floor(Math.random() * 1000)}`;
 
-    const newOrder = {
-      id: `ord_${Date.now()}`,
+    const order = await Order.create({
       orderNumber,
       guestEmail,
       guestName,
-      shippingAddress,
+      shippingAddress: typeof shippingAddress === 'string' ? shippingAddress : JSON.stringify(shippingAddress),
       paymentMethod: paymentMethod || 'Cash On Delivery',
       subtotal: parseFloat(subtotal),
       tax: parseFloat(tax),
       shippingFee: parseFloat(shippingFee),
       discount: parseFloat(discount),
       totalAmount: parseFloat(totalAmount),
-      items,
-      createdAt: new Date().toISOString(),
-    };
-
-    MOCK_ORDERS.push(newOrder);
+      items: items.map((item: any) => ({
+        productId: item.productId || item.id,
+        productName: item.name,
+        price: parseFloat(item.price),
+        quantity: parseInt(item.quantity, 10),
+        size: item.size || 'L',
+        color: item.color || 'Black',
+        image: item.image || item.images?.[0] || '',
+      })),
+    });
 
     res.status(201).json({
       success: true,
       message: 'Order created successfully',
-      data: newOrder,
+      data: order,
     });
   } catch (error: any) {
-    console.error('Error creating order:', error);
+    console.error('Error creating order in MongoDB:', error);
     res.status(500).json({ success: false, message: 'Failed to place order' });
   }
 };
@@ -56,7 +59,9 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
 export const getOrderById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id as string;
-    const order = MOCK_ORDERS.find((o) => o.id === id || o.orderNumber === id);
+    const order = await Order.findOne({
+      $or: [{ _id: id }, { orderNumber: id }],
+    });
 
     if (!order) {
       res.status(404).json({ success: false, message: 'Order not found' });
@@ -65,7 +70,7 @@ export const getOrderById = async (req: Request, res: Response): Promise<void> =
 
     res.json({ success: true, data: order });
   } catch (error: any) {
-    console.error('Error fetching order:', error);
+    console.error('Error fetching order from MongoDB:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };

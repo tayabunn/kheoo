@@ -10,9 +10,9 @@ export const Footer: React.FC = () => {
     <footer className="bg-white text-zinc-600 border-t border-zinc-200 pt-16 pb-12">
       {/* Brand Value Propositions Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg bg-zinc-50 border border-zinc-200">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-none bg-zinc-50 border border-zinc-200">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-md bg-black text-white flex items-center justify-center shrink-0 shadow-md">
+            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
               <Truck className="w-6 h-6" />
             </div>
             <div>
@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-md bg-black text-white flex items-center justify-center shrink-0 shadow-md">
+            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
               <Award className="w-6 h-6" />
             </div>
             <div>
@@ -32,7 +32,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-md bg-black text-white flex items-center justify-center shrink-0 shadow-md">
+            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
               <RotateCcw className="w-6 h-6" />
             </div>
             <div>
@@ -42,7 +42,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-md bg-black text-white flex items-center justify-center shrink-0 shadow-md">
+            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
@@ -76,16 +76,16 @@ export const Footer: React.FC = () => {
             Contact: <a href="mailto:hello@kheoo.com" className="underline hover:text-black">hello@kheoo.com</a>
           </p>
           <div className="flex items-center gap-3 pt-2">
-            <a href="#" className="w-9 h-9 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Instagram">
+            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Instagram">
               <Share2 className="w-4 h-4" />
             </a>
-            <a href="#" className="w-9 h-9 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Website">
+            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Website">
               <Globe className="w-4 h-4" />
             </a>
-            <a href="#" className="w-9 h-9 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Community">
+            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Community">
               <MessageCircle className="w-4 h-4" />
             </a>
-            <a href="#" className="w-9 h-9 rounded-lg bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Drops">
+            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Drops">
               <Sparkles className="w-4 h-4 text-black" />
             </a>
           </div>

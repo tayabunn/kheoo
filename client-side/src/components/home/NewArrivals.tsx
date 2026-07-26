@@ -13,7 +13,7 @@ interface NewArrivalsProps {
 export const NewArrivals: React.FC<NewArrivalsProps> = ({ products }) => {
   return (
     <section className="py-20 bg-white text-black border-b border-zinc-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[85%] mx-auto px-4 sm:px-0 lg:px-2">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
             <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest">

@@ -17,7 +17,7 @@ export const Newsletter: React.FC = () => {
   return (
     <section className="py-20 bg-white text-black border-b border-zinc-200">
       <div className="max-w-4xl mx-auto px-4 text-center">
-        <div className="w-14 h-14 rounded-md bg-black text-white flex items-center justify-center mx-auto mb-6 shadow-md">
+        <div className="w-14 h-14 rounded-none bg-black text-white flex items-center justify-center mx-auto mb-6 shadow-md">
           <Mail className="w-7 h-7" />
         </div>
 
@@ -32,7 +32,7 @@ export const Newsletter: React.FC = () => {
         </p>
 
         {submitted ? (
-          <div className="bg-zinc-100 border border-zinc-200 text-black p-4 rounded-md max-w-md mx-auto flex items-center justify-center gap-2 text-xs font-mono">
+          <div className="bg-zinc-100 border border-zinc-200 text-black p-4 rounded-none max-w-md mx-auto flex items-center justify-center gap-2 text-xs font-mono">
             <CheckCircle2 className="w-4 h-4 text-black" />
             <span>You&apos;re in! Check your inbox for code <strong>KHEOO10</strong>.</span>
           </div>
@@ -44,11 +44,11 @@ export const Newsletter: React.FC = () => {
               placeholder="ENTER YOUR EMAIL ADDRESS..."
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-zinc-50 border border-zinc-200 text-xs text-black px-4 py-3.5 rounded-lg focus:outline-none focus:border-black uppercase placeholder-zinc-400"
+              className="flex-1 bg-zinc-50 border border-zinc-200 text-xs text-black px-4 py-3.5 rounded-none focus:outline-none focus:border-black uppercase placeholder-zinc-400"
             />
             <button
               type="submit"
-              className="bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-lg flex items-center justify-center gap-2 transition-all shrink-0 shadow-md"
+              className="bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-none flex items-center justify-center gap-2 transition-all shrink-0 shadow-md border border-black"
             >
               CLAIM 10% OFF <ArrowRight className="w-4 h-4" />
             </button>

@@ -1,16 +1,12 @@
 import { Request, Response } from 'express';
-
-const MOCK_CATEGORIES = [
-  { id: 'cat-anime', name: 'Anime Streetwear', slug: 'anime' },
-  { id: 'cat-marvel', name: 'Marvel Drop Shoulders', slug: 'marvel' },
-  { id: 'cat-dc', name: 'DC Gothic Tactical', slug: 'dc' },
-];
+import { Category } from '../models/Category';
 
 export const getCategories = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.json({ success: true, data: MOCK_CATEGORIES });
+    const categories = await Category.find().sort({ name: 1 });
+    res.json({ success: true, data: categories });
   } catch (error: any) {
-    console.error('Error fetching categories:', error);
+    console.error('Error fetching categories from MongoDB:', error);
     res.status(500).json({ success: false, message: 'Server error fetching categories' });
   }
 };

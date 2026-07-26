@@ -6,7 +6,7 @@ import { Truck, ShieldCheck, Zap } from 'lucide-react';
 export const AnnouncementBar: React.FC = () => {
   return (
     <div className="bg-zinc-100 text-black text-xs font-mono py-2.5 px-4 border-b border-zinc-200">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="w-[85%] mx-auto flex items-center justify-between">
         <div className="hidden md:flex items-center gap-4 text-zinc-600">
           <span className="flex items-center gap-1.5 hover:text-black transition-colors">
             <Truck className="w-3.5 h-3.5 text-black" /> FREE EXPRESS SHIPPING OVER $50

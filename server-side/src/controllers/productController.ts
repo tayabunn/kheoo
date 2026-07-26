@@ -1,126 +1,63 @@
 import { Request, Response } from 'express';
-
-// Sample dataset ready to be replaced with MongoDB / Mongoose Model queries
-const MOCK_PRODUCTS = [
-  {
-    id: 'p1',
-    name: 'Naruto Sage Mode Heavyweight Drop Shoulder Tee',
-    slug: 'naruto-sage-mode-drop-shoulder-tshirt',
-    description: 'Sleek dark oversized fit tee with high-density puff print of Naruto in Six Paths Sage Mode.',
-    price: 34.99,
-    oldPrice: 44.99,
-    isNew: true,
-    isBestSeller: true,
-    isTrending: true,
-    categoryId: 'anime',
-    stock: 65,
-    material: '100% Combed Heavyweight Cotton (240 GSM)',
-    printQuality: 'Screen & Puff Print',
-    rating: 4.9,
-    reviewCount: 28,
-    images: [
-      'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=80',
-    ],
-  },
-  {
-    id: 'p2',
-    name: 'Gojo Unlimited Void Oversized Drop Shoulder Tee',
-    slug: 'gojo-unlimited-void-oversized-tee',
-    description: 'Jujutsu Kaisen special edition tee featuring Gojo Domain Expansion graphic print.',
-    price: 38.99,
-    oldPrice: 49.99,
-    isNew: true,
-    isBestSeller: true,
-    isTrending: true,
-    categoryId: 'anime',
-    stock: 40,
-    material: '240 GSM Luxury Heavy Cotton',
-    printQuality: 'High-Density Puff Print',
-    rating: 5.0,
-    reviewCount: 42,
-    images: [
-      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80',
-    ],
-  },
-  {
-    id: 'p3',
-    name: 'Spider-Man Symbiote Vintage Drop Shoulder Tee',
-    slug: 'spider-man-symbiote-vintage-tee',
-    description: 'Dark symbiote venom web graphic print over washed charcoal heavyweight cotton.',
-    price: 36.99,
-    oldPrice: 45.99,
-    isNew: false,
-    isBestSeller: true,
-    isTrending: true,
-    categoryId: 'marvel',
-    stock: 50,
-    material: '240 GSM Heavyweight Cotton',
-    printQuality: 'Vintage Acid Wash Screen Print',
-    rating: 4.8,
-    reviewCount: 19,
-    images: [
-      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=80',
-    ],
-  },
-  {
-    id: 'p4',
-    name: 'Batman Dark Knight Tactical Oversized Tee',
-    slug: 'batman-dark-knight-tactical-tee',
-    description: 'Gotham City silhouette with tactical bat logo stencil print.',
-    price: 32.99,
-    oldPrice: 42.99,
-    isNew: true,
-    isBestSeller: false,
-    isTrending: true,
-    categoryId: 'dc',
-    stock: 30,
-    material: '240 GSM 100% Ringspun Cotton',
-    printQuality: 'Tactical Stencil Print',
-    rating: 4.7,
-    reviewCount: 15,
-    images: [
-      'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80',
-    ],
-  },
-];
+import { Product } from '../models/Product';
+import { Category } from '../models/Category';
 
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { category, search, isNew, isBestSeller, isTrending } = req.query;
+    const { category, search, size, isNew, isBestSeller, isTrending, sort, page = '1', limit = '12' } = req.query;
 
-    let filtered = [...MOCK_PRODUCTS];
+    const pageNum = parseInt(page as string, 10) || 1;
+    const limitNum = parseInt(limit as string, 10) || 12;
+    const skip = (pageNum - 1) * limitNum;
+
+    const filter: any = {};
 
     if (category && typeof category === 'string') {
-      filtered = filtered.filter((p) => p.categoryId.toLowerCase() === category.toLowerCase());
+      const catObj = await Category.findOne({ slug: category.toLowerCase() });
+      if (catObj) {
+        filter.categoryId = catObj.slug;
+      } else {
+        filter.categoryId = category.toLowerCase();
+      }
     }
 
     if (search && typeof search === 'string') {
-      const q = search.toLowerCase();
-      filtered = filtered.filter(
-        (p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
-      );
+      filter.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+      ];
     }
 
-    if (isNew === 'true') filtered = filtered.filter((p) => p.isNew);
-    if (isBestSeller === 'true') filtered = filtered.filter((p) => p.isBestSeller);
-    if (isTrending === 'true') filtered = filtered.filter((p) => p.isTrending);
+    if (isNew === 'true') filter.isNewProduct = true;
+    if (isBestSeller === 'true') filter.isBestSeller = true;
+    if (isTrending === 'true') filter.isTrending = true;
+
+    if (size && typeof size === 'string') {
+      filter['variants.size'] = { $regex: new RegExp(`^${size}$`, 'i') };
+    }
+
+    let sortOptions: any = { createdAt: -1 };
+    if (sort === 'price_asc') sortOptions = { price: 1 };
+    if (sort === 'price_desc') sortOptions = { price: -1 };
+    if (sort === 'rating') sortOptions = { rating: -1 };
+
+    const [products, total] = await Promise.all([
+      Product.find(filter).sort(sortOptions).skip(skip).limit(limitNum),
+      Product.countDocuments(filter),
+    ]);
 
     res.json({
       success: true,
-      data: filtered,
+      data: products,
       pagination: {
-        page: 1,
-        limit: 12,
-        total: filtered.length,
-        totalPages: 1,
+        page: pageNum,
+        limit: limitNum,
+        total,
+        totalPages: Math.ceil(total / limitNum) || 1,
       },
     });
   } catch (error: any) {
-    console.error('Error fetching products:', error);
+    console.error('Error fetching products from MongoDB:', error);
     res.status(500).json({ success: false, message: 'Server error fetching products' });
   }
 };
@@ -128,7 +65,7 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
 export const getProductBySlug = async (req: Request, res: Response): Promise<void> => {
   try {
     const slug = req.params.slug as string;
-    const product = MOCK_PRODUCTS.find((p) => p.slug === slug);
+    const product = await Product.findOne({ slug: slug.toLowerCase() });
 
     if (!product) {
       res.status(404).json({ success: false, message: 'Product not found' });
@@ -137,7 +74,7 @@ export const getProductBySlug = async (req: Request, res: Response): Promise<voi
 
     res.json({ success: true, data: product });
   } catch (error: any) {
-    console.error('Error fetching product by slug:', error);
+    console.error('Error fetching product by slug from MongoDB:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };

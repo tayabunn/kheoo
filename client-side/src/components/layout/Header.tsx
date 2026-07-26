@@ -22,10 +22,10 @@ export const Header: React.FC = () => {
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200 text-black">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-zinc-200 text-black">
       <AnnouncementBar />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[85%] mx-auto px-4 sm:px-0 lg:px-2">
         <div className="flex items-center justify-between h-24">
           {/* Left: Mobile Toggle & Logo */}
           <div className="flex items-center gap-4">
@@ -50,9 +50,6 @@ export const Header: React.FC = () => {
 
           {/* Middle: Nav Links */}
           <nav className="hidden lg:flex items-center gap-8 text-xs font-black tracking-widest uppercase text-black">
-            <Link href="/" className="hover:text-zinc-600 transition-colors py-2">
-              HOME
-            </Link>
             <Link href="/shop" className="hover:text-zinc-600 transition-colors py-2">
               SHOP ALL
             </Link>
@@ -108,7 +105,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={openSearch}
-              className="p-2 text-zinc-700 hover:text-black transition-colors rounded-lg hover:bg-zinc-100"
+              className="p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
               title="Search"
             >
               <Search className="w-5 h-5" />
@@ -116,12 +113,12 @@ export const Header: React.FC = () => {
 
             <Link
               href="/wishlist"
-              className="relative p-2 text-zinc-700 hover:text-black transition-colors rounded-lg hover:bg-zinc-100"
+              className="relative p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
               title="Wishlist"
             >
               <Heart className="w-5 h-5" />
               {wishlistItems.length > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-black text-white text-[10px] font-black rounded-full flex items-center justify-center font-mono">
+                <span className="absolute top-1 right-1 w-4 h-4 bg-black text-white text-[10px] font-black rounded-none flex items-center justify-center font-mono">
                   {wishlistItems.length}
                 </span>
               )}
@@ -129,7 +126,7 @@ export const Header: React.FC = () => {
 
             <button
               onClick={openCart}
-              className="relative p-2.5 bg-black text-white font-bold hover:bg-zinc-800 rounded-lg flex items-center gap-2 transition-all shadow-md active:scale-95"
+              className="relative p-2.5 bg-black text-white font-bold hover:bg-zinc-800 rounded-none flex items-center gap-2 transition-all shadow-md active:scale-95 border border-black"
               title="Cart"
             >
               <ShoppingBag className="w-5 h-5 text-white" />
@@ -140,7 +137,7 @@ export const Header: React.FC = () => {
 
             <Link
               href="/login"
-              className="hidden sm:flex p-2 text-zinc-700 hover:text-black transition-colors rounded-lg hover:bg-zinc-100"
+              className="hidden sm:flex p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
               title="Account"
             >
               <User className="w-5 h-5" />
