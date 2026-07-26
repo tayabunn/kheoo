@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { prisma } from '../lib/prisma';
 
 export const validateCoupon = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -10,39 +9,23 @@ export const validateCoupon = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    const coupon = await prisma.coupon.findUnique({
-      where: { code: (code as string).trim().toUpperCase() },
-    });
+    const cleanCode = (code as string).trim().toUpperCase();
 
-    if (!coupon || !coupon.isActive) {
-      res.status(400).json({ success: false, message: 'Invalid or expired promo code' });
-      return;
-    }
-
-    if (subtotal && subtotal < coupon.minPurchase) {
-      res.status(400).json({
-        success: false,
-        message: `Coupon requires a minimum purchase of $${coupon.minPurchase}`,
+    if (cleanCode === 'KHEOO10') {
+      const discountAmount = subtotal ? (subtotal * 10) / 100 : 0;
+      res.json({
+        success: true,
+        message: 'Coupon applied successfully',
+        data: {
+          code: 'KHEOO10',
+          discountAmount,
+          discountPercent: 10,
+        },
       });
       return;
     }
 
-    let discountAmount = 0;
-    if (coupon.discountPercent) {
-      discountAmount = (subtotal * coupon.discountPercent) / 100;
-    } else if (coupon.discountAmount) {
-      discountAmount = coupon.discountAmount;
-    }
-
-    res.json({
-      success: true,
-      message: 'Coupon applied successfully',
-      data: {
-        code: coupon.code,
-        discountAmount,
-        discountPercent: coupon.discountPercent,
-      },
-    });
+    res.status(400).json({ success: false, message: 'Invalid or expired promo code' });
   } catch (error: any) {
     console.error('Error validating coupon:', error);
     res.status(500).json({ success: false, message: 'Server error' });

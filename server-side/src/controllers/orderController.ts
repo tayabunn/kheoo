@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { prisma } from '../lib/prisma';
+
+const MOCK_ORDERS: any[] = [];
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -21,41 +22,30 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    const orderNumber = `NEX-${Date.now().toString().slice(-6)}-${Math.floor(Math.random() * 1000)}`;
+    const orderNumber = `KHEOO-${Date.now().toString().slice(-6)}-${Math.floor(Math.random() * 1000)}`;
 
-    const order = await prisma.order.create({
-      data: {
-        orderNumber,
-        guestEmail,
-        guestName,
-        shippingAddress: typeof shippingAddress === 'string' ? shippingAddress : JSON.stringify(shippingAddress),
-        paymentMethod: paymentMethod || 'Cash On Delivery',
-        subtotal: parseFloat(subtotal),
-        tax: parseFloat(tax),
-        shippingFee: parseFloat(shippingFee),
-        discount: parseFloat(discount),
-        totalAmount: parseFloat(totalAmount),
-        items: {
-          create: items.map((item: any) => ({
-            productId: item.productId,
-            productName: item.name,
-            price: parseFloat(item.price),
-            quantity: parseInt(item.quantity, 10),
-            size: item.size || 'L',
-            color: item.color || 'Black',
-            image: item.image || '',
-          })),
-        },
-      },
-      include: {
-        items: true,
-      },
-    });
+    const newOrder = {
+      id: `ord_${Date.now()}`,
+      orderNumber,
+      guestEmail,
+      guestName,
+      shippingAddress,
+      paymentMethod: paymentMethod || 'Cash On Delivery',
+      subtotal: parseFloat(subtotal),
+      tax: parseFloat(tax),
+      shippingFee: parseFloat(shippingFee),
+      discount: parseFloat(discount),
+      totalAmount: parseFloat(totalAmount),
+      items,
+      createdAt: new Date().toISOString(),
+    };
+
+    MOCK_ORDERS.push(newOrder);
 
     res.status(201).json({
       success: true,
       message: 'Order created successfully',
-      data: order,
+      data: newOrder,
     });
   } catch (error: any) {
     console.error('Error creating order:', error);
@@ -66,14 +56,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
 export const getOrderById = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id as string;
-    const order = await prisma.order.findFirst({
-      where: {
-        OR: [{ id: { equals: id } }, { orderNumber: { equals: id } }],
-      },
-      include: {
-        items: true,
-      },
-    });
+    const order = MOCK_ORDERS.find((o) => o.id === id || o.orderNumber === id);
 
     if (!order) {
       res.status(404).json({ success: false, message: 'Order not found' });
