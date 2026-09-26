@@ -12,7 +12,7 @@ export interface ProductVariant {
 export interface Category {
   id: string;
   name: string;
-  slug: string;
+  slug?: string;
   description?: string;
   image?: string;
   parentId?: string;
@@ -76,27 +76,39 @@ export interface OrderItem {
   image: string;
 }
 
+export interface ShippingAddress {
+  fullName?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  street?: string;
+  state?: string;
+  country?: string;
+}
+
 export interface Order {
-  id?: string;
+  id: string;
   _id?: string;
   orderNumber: string;
   guestEmail?: string;
   guestName?: string;
   customerName?: string;
+  customerEmail?: string;
   customerPhone?: string;
-  status: 'PENDING' | 'PROCESSING' | 'PACKED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+  status: 'PENDING' | 'PROCESSING' | 'PACKED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | string;
   paymentMethod: string;
-  paymentStatus: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
-  orderSource?: 'ONLINE' | 'POS';
-  subtotal: number;
-  tax: number;
-  shippingFee: number;
-  discount: number;
+  paymentStatus: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED' | 'pending' | 'paid' | 'failed' | 'refunded' | string;
+  orderSource?: 'ONLINE' | 'POS' | string;
+  subtotal?: number;
+  tax?: number;
+  shippingFee?: number;
+  discount?: number;
   totalAmount: number;
   cashReceived?: number;
   changeAmount?: number;
   notes?: string;
-  shippingAddress: string;
+  shippingAddress?: string | ShippingAddress | any;
   items: OrderItem[];
   createdAt: string;
 }

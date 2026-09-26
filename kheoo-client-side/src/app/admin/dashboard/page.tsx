@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -59,7 +59,7 @@ interface CompletedSale {
   timestamp: string;
 }
 
-export default function AdminDashboardPage() {
+function AdminDashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
@@ -721,10 +721,15 @@ export default function AdminDashboardPage() {
   });
 
   const filteredOrders = orders.filter((o) => {
+    const orderId = (o.id || o.orderNumber || o._id || '').toLowerCase();
+    const custName = (o.customerName || o.guestName || '').toLowerCase();
+    const custPhone = o.customerPhone || '';
+    const q = searchQuery.toLowerCase();
+
     const matchSearch =
-      o.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      o.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (o.customerPhone && o.customerPhone.includes(searchQuery));
+      orderId.includes(q) ||
+      custName.includes(q) ||
+      custPhone.includes(searchQuery);
     const matchSource =
       orderSourceFilter === 'ALL' ||
       (orderSourceFilter === 'POS' && o.orderSource === 'POS') ||
@@ -2092,5 +2097,13 @@ export default function AdminDashboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminDashboardPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white p-8 font-mono flex items-center justify-center">Loading KHEOO Command Center...</div>}>
+      <AdminDashboardContent />
+    </Suspense>
   );
 }

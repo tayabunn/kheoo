@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ShieldCheck, Lock, Mail, ArrowRight, Eye, EyeOff, Sparkles, Store, KeyRound } from 'lucide-react';
 
-export default function AdminLoginPage() {
+function AdminLoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get('returnUrl') || '/admin/dashboard';
@@ -224,6 +224,14 @@ export default function AdminLoginPage() {
         KHEOO Streetwear Admin & POS Suite • Encrypted Connection
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white text-black font-mono flex items-center justify-center">Loading Authentication Portal...</div>}>
+      <AdminLoginContent />
+    </Suspense>
   );
 }
 

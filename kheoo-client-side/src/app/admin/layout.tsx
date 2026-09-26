@@ -14,14 +14,82 @@ import {
   Menu,
   X,
   RefreshCw,
-  ArrowUpRight,
 } from 'lucide-react';
+
+const NAV_ITEMS = [
+  {
+    id: 'overview',
+    label: 'Dashboard Overview',
+    href: '/admin/dashboard',
+    icon: LayoutDashboard,
+  },
+  {
+    id: 'pos',
+    label: '⚡ POS Terminal',
+    href: '/admin/dashboard?tab=pos',
+    icon: Store,
+    badge: 'COUNTER',
+  },
+  {
+    id: 'products',
+    label: 'Products & Inventory',
+    href: '/admin/dashboard?tab=products',
+    icon: Package,
+  },
+  {
+    id: 'orders',
+    label: 'Orders & POS Sales',
+    href: '/admin/dashboard?tab=orders',
+    icon: ShoppingBag,
+  },
+];
+
+function AdminNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
+  const searchParams = useSearchParams();
+  const currentTab = searchParams ? searchParams.get('tab') || 'overview' : 'overview';
+
+  return (
+    <div className="space-y-1.5">
+      <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest px-2 mb-2 block">
+        Core Modules
+      </span>
+      {NAV_ITEMS.map((item) => {
+        const Icon = item.icon;
+        const isActive = currentTab === item.id;
+        return (
+          <Link
+            key={item.id}
+            href={item.href}
+            onClick={onLinkClick}
+            className={`flex items-center justify-between px-3.5 py-2.5 text-xs font-bold uppercase transition-all ${
+              isActive
+                ? 'bg-black text-white font-black'
+                : 'text-zinc-600 hover:text-black hover:bg-zinc-100 border border-transparent'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <Icon className="w-4 h-4" />
+              <span>{item.label}</span>
+            </div>
+            {item.badge && (
+              <span
+                className={`text-[9px] font-black px-1.5 py-0.5 uppercase ${
+                  isActive ? 'bg-white text-black' : 'bg-black text-white'
+                }`}
+              >
+                {item.badge}
+              </span>
+            )}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentTab = searchParams ? searchParams.get('tab') || 'overview' : 'overview';
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [adminUser, setAdminUser] = useState<{ name?: string; email?: string } | null>(null);
@@ -84,34 +152,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
-  const navItems = [
-    {
-      id: 'overview',
-      label: 'Dashboard Overview',
-      href: '/admin/dashboard',
-      icon: LayoutDashboard,
-    },
-    {
-      id: 'pos',
-      label: '⚡ POS Terminal',
-      href: '/admin/dashboard?tab=pos',
-      icon: Store,
-      badge: 'COUNTER',
-    },
-    {
-      id: 'products',
-      label: 'Products & Inventory',
-      href: '/admin/dashboard?tab=products',
-      icon: Package,
-    },
-    {
-      id: 'orders',
-      label: 'Orders & POS Sales',
-      href: '/admin/dashboard?tab=orders',
-      icon: ShoppingBag,
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-zinc-50 text-black font-mono flex selection:bg-black selection:text-white">
       {/* Sidebar for Desktop */}
@@ -140,41 +180,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
           </div>
 
-          {/* Nav List */}
-          <div className="space-y-1.5">
-            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest px-2 mb-2 block">
-              Core Modules
-            </span>
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentTab === item.id;
-              return (
-                <Link
-                  key={item.id}
-                  href={item.href}
-                  className={`flex items-center justify-between px-3.5 py-2.5 text-xs font-bold uppercase transition-all ${
-                    isActive
-                      ? 'bg-black text-white font-black'
-                      : 'text-zinc-600 hover:text-black hover:bg-zinc-100 border border-transparent'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span
-                      className={`text-[9px] font-black px-1.5 py-0.5 uppercase ${
-                        isActive ? 'bg-white text-black' : 'bg-black text-white'
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
+          {/* Nav List with Suspense */}
+          <Suspense fallback={<div className="h-40 bg-zinc-100 animate-pulse" />}>
+            <AdminNavLinks />
+          </Suspense>
         </div>
 
         {/* Bottom User Info & Actions */}
@@ -272,27 +281,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   </button>
                 </div>
 
-                <div className="space-y-1.5">
-                  {navItems.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = currentTab === item.id;
-                    return (
-                      <Link
-                        key={item.id}
-                        href={item.href}
-                        onClick={() => setSidebarOpen(false)}
-                        className={`flex items-center gap-3 px-3.5 py-2.5 text-xs font-bold uppercase transition-all ${
-                          isActive
-                            ? 'bg-black text-white font-black'
-                            : 'text-zinc-700 hover:bg-zinc-100 hover:text-black'
-                        }`}
-                      >
-                        <Icon className="w-4 h-4" />
-                        <span>{item.label}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
+                <Suspense fallback={<div className="h-40 bg-zinc-100 animate-pulse" />}>
+                  <AdminNavLinks onLinkClick={() => setSidebarOpen(false)} />
+                </Suspense>
               </div>
 
               <div className="pt-5 border-t border-zinc-200 space-y-2">
