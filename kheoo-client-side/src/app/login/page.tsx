@@ -53,12 +53,11 @@ function AuthContent() {
         setSuccessMsg('Signed in successfully! Redirecting...');
         setTimeout(() => {
           router.push('/');
-        }, 1200);
+        }, 1000);
       } else {
         setErrorMsg(data.message || 'Invalid email or password.');
       }
     } catch {
-      // Fallback local session if backend is momentarily restarting
       localStorage.setItem('kheoo_user', JSON.stringify({ email: loginEmail, name: loginEmail.split('@')[0] }));
       setSuccessMsg('Welcome back! Redirecting...');
       setTimeout(() => {
@@ -113,7 +112,7 @@ function AuthContent() {
         setSuccessMsg('Account created successfully! Redirecting...');
         setTimeout(() => {
           router.push('/');
-        }, 1200);
+        }, 1000);
       } else {
         setErrorMsg(data.message || 'Registration failed. Please try again.');
       }
@@ -137,22 +136,21 @@ function AuthContent() {
     const scope = encodeURIComponent('openid profile email');
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}`;
 
-    // Prompt user with Google popup/redirect or mock session if offline
     window.location.href = googleAuthUrl;
   };
 
   return (
-    <div className="py-16 bg-white text-black min-h-screen">
-      <div className="w-[90%] max-w-md mx-auto">
-        {/* Top Branding / Breadcrumb */}
-        <div className="text-center mb-8">
-          <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest">
+    <div className="min-h-[calc(100vh-140px)] flex flex-col justify-center py-6 md:py-8 bg-white text-black">
+      <div className="w-[92%] max-w-[440px] mx-auto font-mono">
+        {/* Top Header */}
+        <div className="text-center mb-3">
+          <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block">
             KHEOO AUTHENTICATION
           </span>
-          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black mt-1">
+          <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black mt-0.5">
             {mode === 'login' ? 'WELCOME BACK' : 'CREATE AN ACCOUNT'}
           </h1>
-          <p className="text-xs text-zinc-500 mt-2 font-mono">
+          <p className="text-[11px] text-zinc-500 mt-1 font-sans">
             {mode === 'login'
               ? 'Sign in to track orders, access wishlist & member drops.'
               : 'Join the KHEOO club for 10% off your first streetwear drop.'}
@@ -160,7 +158,7 @@ function AuthContent() {
         </div>
 
         {/* Auth Mode Toggle Tabs */}
-        <div className="grid grid-cols-2 bg-zinc-100 p-1 border border-zinc-200 mb-6 font-mono text-xs">
+        <div className="grid grid-cols-2 bg-zinc-100 p-1 border border-zinc-200 mb-3 text-xs">
           <button
             type="button"
             onClick={() => {
@@ -168,7 +166,7 @@ function AuthContent() {
               setErrorMsg('');
               setSuccessMsg('');
             }}
-            className={`py-3 font-bold uppercase transition-all ${
+            className={`py-2 font-bold uppercase transition-all ${
               mode === 'login'
                 ? 'bg-black text-white shadow-sm'
                 : 'text-zinc-600 hover:text-black'
@@ -183,7 +181,7 @@ function AuthContent() {
               setErrorMsg('');
               setSuccessMsg('');
             }}
-            className={`py-3 font-bold uppercase transition-all ${
+            className={`py-2 font-bold uppercase transition-all ${
               mode === 'register'
                 ? 'bg-black text-white shadow-sm'
                 : 'text-zinc-600 hover:text-black'
@@ -195,26 +193,26 @@ function AuthContent() {
 
         {/* Alerts */}
         {errorMsg && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 text-xs rounded-none flex items-center gap-2 font-mono">
+          <div className="mb-3 p-3 bg-red-50 border border-red-200 text-red-600 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-none flex items-center gap-2 font-mono">
+          <div className="mb-3 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
             <span>{successMsg}</span>
           </div>
         )}
 
-        <div className="bg-white p-6 sm:p-8 border border-zinc-200 shadow-sm font-mono">
+        <div className="bg-white p-5 sm:p-6 border border-zinc-200 shadow-sm">
           {/* Google Sign-In Button */}
           <button
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full bg-white hover:bg-zinc-50 text-black border border-zinc-300 font-bold text-xs uppercase py-3.5 px-4 flex items-center justify-center gap-3 transition-colors mb-6 shadow-sm active:scale-98"
+            className="w-full bg-white hover:bg-zinc-50 text-black border border-zinc-300 font-bold text-xs uppercase py-2.5 px-4 flex items-center justify-center gap-3 transition-colors mb-3 shadow-sm active:scale-98"
           >
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
               <path
@@ -234,69 +232,69 @@ function AuthContent() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Continue with Google</span>
+            <span className="font-mono">Continue with Google</span>
           </button>
 
-          <div className="relative flex items-center justify-center mb-6">
+          <div className="relative flex items-center justify-center mb-3">
             <div className="border-t border-zinc-200 w-full" />
-            <span className="bg-white px-3 text-[10px] text-zinc-400 uppercase tracking-widest absolute">
-              OR CONTINUE WITH EMAIL
+            <span className="bg-white px-2 text-[9px] text-zinc-400 uppercase tracking-widest absolute">
+              OR WITH EMAIL
             </span>
           </div>
 
           {/* SIGN IN FORM */}
           {mode === 'login' ? (
-            <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <form onSubmit={handleLoginSubmit} className="space-y-3">
               <div>
-                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1.5">
+                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1">
                   Email Address *
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Mail className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     required
-                    placeholder="NAME@EXAMPLE.COM"
+                    placeholder="name@example.com"
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-10 pr-4 py-3 focus:outline-none focus:border-black uppercase placeholder-zinc-400"
+                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-9 pr-3 py-2.5 focus:outline-none focus:border-black font-sans placeholder:text-zinc-400"
                   />
                 </div>
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center justify-between mb-1">
                   <label className="block text-[11px] font-bold text-zinc-700 uppercase">
                     Password *
                   </label>
                   <Link
                     href="/forgot-password"
-                    className="text-[10px] text-zinc-500 hover:text-black uppercase underline"
+                    className="text-[10px] text-zinc-500 hover:text-black underline"
                   >
                     Forgot Password?
                   </Link>
                 </div>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Lock className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
                     placeholder="••••••••"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-10 pr-10 py-3 focus:outline-none focus:border-black"
+                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-9 pr-9 py-2.5 focus:outline-none focus:border-black font-sans"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="p-1 text-zinc-400 hover:text-black absolute right-3 top-1/2 -translate-y-1/2"
+                    className="p-1 text-zinc-400 hover:text-black absolute right-2.5 top-1/2 -translate-y-1/2"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-1">
+              <div className="flex items-center gap-2 pt-0.5">
                 <input
                   type="checkbox"
                   id="rememberMe"
@@ -304,7 +302,7 @@ function AuthContent() {
                   onChange={(e) => setRememberMe(e.target.checked)}
                   className="accent-black w-3.5 h-3.5"
                 />
-                <label htmlFor="rememberMe" className="text-xs text-zinc-600 select-none cursor-pointer">
+                <label htmlFor="rememberMe" className="text-[11px] text-zinc-600 select-none cursor-pointer font-sans">
                   Remember me on this device
                 </label>
               </div>
@@ -312,106 +310,110 @@ function AuthContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-widest py-3.5 flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 border border-black"
+                className="w-full bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-widest py-3 flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 border border-black cursor-pointer mt-2"
               >
-                {loading ? 'Authenticating...' : 'Sign In'} <ArrowRight className="w-4 h-4" />
+                {loading ? 'Authenticating...' : 'Sign In'} <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
           ) : (
-            /* REGISTER / SIGN UP FORM */
-            <form onSubmit={handleRegisterSubmit} className="space-y-4">
-              <div>
-                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1.5">
-                  Full Name *
-                </label>
-                <div className="relative">
-                  <UserIcon className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    required
-                    placeholder="JOHN DOE"
-                    value={regName}
-                    onChange={(e) => setRegName(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-10 pr-4 py-3 focus:outline-none focus:border-black uppercase placeholder-zinc-400"
-                  />
+            /* REGISTER / SIGN UP FORM - COMPACT 2-COLUMN GRID TO FIT SCREEN */
+            <form onSubmit={handleRegisterSubmit} className="space-y-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1">
+                    Full Name *
+                  </label>
+                  <div className="relative">
+                    <UserIcon className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      required
+                      placeholder="John Doe"
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-9 pr-3 py-2 focus:outline-none focus:border-black font-sans placeholder:text-zinc-400"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1">
+                    Phone (Optional)
+                  </label>
+                  <div className="relative">
+                    <Phone className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="tel"
+                      placeholder="+880 1700..."
+                      value={regPhone}
+                      onChange={(e) => setRegPhone(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-9 pr-3 py-2 focus:outline-none focus:border-black font-sans placeholder:text-zinc-400"
+                    />
+                  </div>
                 </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1.5">
+                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1">
                   Email Address *
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <Mail className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     required
-                    placeholder="NAME@EXAMPLE.COM"
+                    placeholder="name@example.com"
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-10 pr-4 py-3 focus:outline-none focus:border-black uppercase placeholder-zinc-400"
+                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-9 pr-3 py-2 focus:outline-none focus:border-black font-sans placeholder:text-zinc-400"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1.5">
-                  Phone Number (Optional)
-                </label>
-                <div className="relative">
-                  <Phone className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="tel"
-                    placeholder="+880 1700 000000"
-                    value={regPhone}
-                    onChange={(e) => setRegPhone(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-10 pr-4 py-3 focus:outline-none focus:border-black"
-                  />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1">
+                    Password *
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      placeholder="Min. 6 chars"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-9 pr-8 py-2 focus:outline-none focus:border-black font-sans placeholder:text-zinc-400"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="p-1 text-zinc-400 hover:text-black absolute right-2 top-1/2 -translate-y-1/2"
+                    >
+                      {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1">
+                    Confirm Password *
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      placeholder="Confirm password"
+                      value={regConfirmPassword}
+                      onChange={(e) => setRegConfirmPassword(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-9 pr-3 py-2 focus:outline-none focus:border-black font-sans placeholder:text-zinc-400"
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1.5">
-                  Password *
-                </label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    placeholder="MINIMUM 6 CHARACTERS"
-                    value={regPassword}
-                    onChange={(e) => setRegPassword(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-10 pr-10 py-3 focus:outline-none focus:border-black"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="p-1 text-zinc-400 hover:text-black absolute right-3 top-1/2 -translate-y-1/2"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold text-zinc-700 uppercase mb-1.5">
-                  Confirm Password *
-                </label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    placeholder="RE-ENTER PASSWORD"
-                    value={regConfirmPassword}
-                    onChange={(e) => setRegConfirmPassword(e.target.value)}
-                    className="w-full bg-zinc-50 border border-zinc-200 text-xs text-black pl-10 pr-4 py-3 focus:outline-none focus:border-black"
-                  />
-                </div>
-              </div>
-
-              <div className="flex items-start gap-2 pt-1">
+              <div className="flex items-start gap-2 pt-0.5">
                 <input
                   type="checkbox"
                   id="agreedTerms"
@@ -420,7 +422,7 @@ function AuthContent() {
                   onChange={(e) => setAgreedTerms(e.target.checked)}
                   className="accent-black w-3.5 h-3.5 mt-0.5"
                 />
-                <label htmlFor="agreedTerms" className="text-[11px] text-zinc-600 leading-tight select-none cursor-pointer">
+                <label htmlFor="agreedTerms" className="text-[10px] text-zinc-600 leading-tight select-none cursor-pointer font-sans">
                   I agree to KHEOO&apos;s{' '}
                   <Link href="/terms-and-conditions" className="text-black underline font-bold">
                     Terms &amp; Conditions
@@ -435,16 +437,16 @@ function AuthContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-widest py-3.5 flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 border border-black"
+                className="w-full bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-widest py-3 flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 border border-black cursor-pointer mt-2"
               >
-                {loading ? 'Creating Account...' : 'Create Account'} <ArrowRight className="w-4 h-4" />
+                {loading ? 'Creating Account...' : 'Create Account'} <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
           )}
         </div>
 
         {/* Footer info */}
-        <div className="text-center mt-6 text-xs text-zinc-500 font-mono">
+        <div className="text-center mt-3 text-xs text-zinc-500">
           {mode === 'login' ? (
             <p>
               Don&apos;t have an account yet?{' '}
