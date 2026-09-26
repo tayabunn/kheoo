@@ -1,32 +1,36 @@
-# dependencies
-node_modules
-/.pnp
-.pnp.*
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
 
-# testing
-/coverage
-
-# build outputs
+# Next.js build
 .next/
 out/
-dist/
 build/
-
-# misc
-.DS_Store
-*.pem
+dist/
 *.tsbuildinfo
 
-# debug logs
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+*.log
 
-# environment variables
-.env
-.env*.local
-!.env.example
-
-# vercel
-.vercel
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
