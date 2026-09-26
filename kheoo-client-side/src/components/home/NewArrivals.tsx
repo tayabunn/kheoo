@@ -14,9 +14,6 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({ products }) => {
     <section className="py-20 bg-white text-black">
       <div className="w-[90%] mx-auto">
         <div className="flex flex-col items-center justify-center text-center mb-12">
-          <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest">
-            FRESH DROP
-          </span>
           <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mt-1">
             FEATURED PRODUCTS
           </h2>

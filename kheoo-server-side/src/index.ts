@@ -6,6 +6,7 @@ import productRoutes from './routes/productRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 import orderRoutes from './routes/orderRoutes';
 import couponRoutes from './routes/couponRoutes';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/coupons', couponRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.json({
