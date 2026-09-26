@@ -13,7 +13,7 @@ export default function ContactPage() {
 
   return (
     <div className="py-16 bg-white text-black min-h-screen">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="w-[90%] mx-auto">
         <div className="mb-10 text-center">
           <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest">
             GET IN TOUCH

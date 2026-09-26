@@ -12,16 +12,14 @@ interface ProductGridProps {
 export const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="bg-white border border-zinc-200 rounded-2xl p-4 space-y-4 animate-pulse">
-            <div className="w-full aspect-[3/4] bg-zinc-100 rounded-xl" />
+          <div key={i} className="bg-white border border-zinc-200 rounded-2xl p-3 space-y-3 animate-pulse">
+            <div className="w-full aspect-[4/5] bg-zinc-100 rounded-xl" />
             <div className="h-4 bg-zinc-100 rounded w-3/4" />
             <div className="h-3 bg-zinc-100 rounded w-1/2" />
-            <div className="flex justify-between items-center pt-2">
-              <div className="h-5 bg-zinc-100 rounded w-1/3" />
-              <div className="h-8 bg-zinc-100 rounded w-1/4" />
-            </div>
+            <div className="h-8 bg-zinc-100 rounded w-full mt-2" />
+            <div className="h-8 bg-zinc-100 rounded w-full" />
           </div>
         ))}
       </div>
@@ -40,7 +38,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) =
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

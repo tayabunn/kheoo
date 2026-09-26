@@ -3,150 +3,146 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, Eye, ShoppingBag, Star } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Heart, ShoppingBag, Zap, Check } from 'lucide-react';
 import { Product } from '../../types/ecommerce';
 import { useCartStore } from '../../store/useCartStore';
 import { useWishlistStore } from '../../store/useWishlistStore';
-import { useQuickViewStore } from '../../store/useQuickViewStore';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const router = useRouter();
   const [selectedSize, setSelectedSize] = useState<string>('L');
-  const [isHovered, setIsHovered] = useState(false);
+  const [added, setAdded] = useState(false);
 
   const addItem = useCartStore((state) => state.addItem);
+  const openCart = useCartStore((state) => state.openCart);
   const { toggleWishlist, isInWishlist } = useWishlistStore();
-  const openQuickView = useQuickViewStore((state) => state.openQuickView);
 
   const wishlisted = isInWishlist(product.id);
+
+  // Calculate discount percentage
   const discount = product.oldPrice
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
-    : 0;
+    : product.isNew
+    ? 20
+    : 15;
+
+  // Convert or format price to BDT style as shown in reference
+  const bdtPrice = product.price < 100 ? Math.round(product.price * 50) : Math.round(product.price);
+  const bdtOldPrice = product.oldPrice
+    ? product.oldPrice < 100
+      ? Math.round(product.oldPrice * 50)
+      : Math.round(product.oldPrice)
+    : Math.round(bdtPrice * 1.25);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     addItem(product, selectedSize, 'Obsidian Black', 1);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product, selectedSize, 'Obsidian Black', 1);
+    router.push('/checkout');
   };
 
   return (
-    <div
-      className="group relative bg-white text-black rounded-none border border-zinc-200 overflow-hidden flex flex-col transition-all duration-300 hover:border-black hover:shadow-xl"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Product Image */}
-      <div className="relative aspect-[3/4] w-full bg-zinc-100 overflow-hidden">
+    <div className="group relative bg-white text-black flex flex-col justify-between transition-all duration-300">
+      {/* Product Image Container */}
+      <div className="relative aspect-[4/5] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-zinc-100 border border-zinc-200">
         <Link href={`/products/${product.slug}`} className="block w-full h-full">
           <Image
-            src={isHovered && product.images[1] ? product.images[1] : product.images[0]}
+            src={product.images[0]}
             alt={product.name}
             fill
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 brightness-95 group-hover:brightness-100"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
 
-        {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none font-mono">
-          {product.isNew && (
-            <span className="bg-black text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-none shadow-md">
-              NEW DROP
+        {/* Coral/Pink Discount Badge (Save X%) */}
+        {discount > 0 && (
+          <div className="absolute top-2.5 left-2.5 z-10 pointer-events-none">
+            <span className="bg-[#ff5b5b] text-white text-[10px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-full">
+              Save {discount}%
             </span>
-          )}
-          {discount > 0 && (
-            <span className="bg-zinc-200 text-black border border-zinc-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none shadow-md">
-              -{discount}%
-            </span>
-          )}
-        </div>
-
-        {/* Action Buttons Overlay */}
-        <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
-          <button
-            onClick={() => toggleWishlist(product)}
-            className={`p-2.5 rounded-none border backdrop-blur-md transition-all ${
-              wishlisted
-                ? 'bg-black text-white border-black'
-                : 'bg-white/80 text-black border-zinc-300 hover:bg-white hover:border-black'
-            }`}
-            title="Wishlist"
-          >
-            <Heart className={`w-4 h-4 ${wishlisted ? 'fill-current' : ''}`} />
-          </button>
-
-          <button
-            onClick={() => openQuickView(product)}
-            className="p-2.5 bg-white/80 hover:bg-white text-black border border-zinc-300 hover:border-black rounded-none backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0"
-            title="Quick View"
-          >
-            <Eye className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Size Selector Overlay */}
-        <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-white/95 backdrop-blur-md border border-zinc-200 p-2 rounded-none flex items-center justify-between gap-1 font-mono shadow-md">
-            <span className="text-[10px] text-zinc-500 uppercase tracking-widest pl-1">Size:</span>
-            <div className="flex gap-1">
-              {['S', 'M', 'L', 'XL', 'XXL'].map((sz) => (
-                <button
-                  key={sz}
-                  onClick={() => setSelectedSize(sz)}
-                  className={`text-[10px] px-2 py-1 rounded-none transition-all ${
-                    selectedSize === sz
-                      ? 'bg-black text-white font-extrabold shadow'
-                      : 'text-zinc-700 hover:bg-zinc-100'
-                  }`}
-                >
-                  {sz}
-                </button>
-              ))}
-            </div>
           </div>
-        </div>
+        )}
+
+        {/* Wishlist Heart Icon at top right */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWishlist(product);
+          }}
+          className={`absolute top-2.5 right-2.5 z-10 p-1.5 sm:p-2 rounded-full backdrop-blur-md transition-all ${
+            wishlisted
+              ? 'bg-black text-white'
+              : 'bg-white/85 text-zinc-700 hover:bg-white hover:text-black border border-zinc-200'
+          }`}
+          title="Wishlist"
+        >
+          <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${wishlisted ? 'fill-current' : ''}`} />
+        </button>
       </div>
 
-      {/* Content */}
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+      {/* Product Information */}
+      <div className="pt-2.5 pb-1 flex-1 flex flex-col justify-between space-y-2">
         <div>
-          <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500 mb-1">
-            <span className="uppercase tracking-widest text-black font-extrabold">
-              {product.category?.name || 'Streetwear'}
-            </span>
-            <div className="flex items-center gap-1 text-black">
-              <Star className="w-3.5 h-3.5 fill-current text-black" />
-              <span className="font-bold">{product.rating}</span>
-            </div>
-          </div>
-
           <Link href={`/products/${product.slug}`} className="block group-hover:text-zinc-600 transition-colors">
-            <h3 className="text-sm font-bold text-black line-clamp-1 leading-snug tracking-tight">
+            <h3 className="text-xs sm:text-sm font-semibold text-zinc-900 line-clamp-2 leading-snug">
               {product.name}
             </h3>
           </Link>
 
-          <p className="text-xs text-zinc-500 line-clamp-1 mt-1 font-sans">
-            {product.material}
-          </p>
-        </div>
-
-        {/* Price & Add */}
-        <div className="flex items-center justify-between pt-2 border-t border-zinc-100 font-mono">
-          <div className="flex items-baseline gap-2">
-            <span className="text-base font-black text-black">${product.price.toFixed(2)}</span>
-            {product.oldPrice && (
-              <span className="text-xs text-zinc-400 line-through">${product.oldPrice.toFixed(2)}</span>
+          {/* Pricing Row */}
+          <div className="flex items-baseline gap-2 mt-1.5 font-sans">
+            <span className="text-xs sm:text-sm font-bold text-black">
+              BDT {bdtPrice}
+            </span>
+            {bdtOldPrice && (
+              <span className="text-[10px] sm:text-xs text-zinc-400 line-through">
+                BDT {bdtOldPrice}
+              </span>
             )}
           </div>
+        </div>
 
+        {/* Two Stacked Action Buttons matching Reference */}
+        <div className="space-y-1.5 pt-1">
+          {/* ADD TO CART Button */}
           <button
+            type="button"
             onClick={handleAddToCart}
-            className="bg-black hover:bg-zinc-800 text-white text-xs font-black px-3.5 py-2 rounded-none flex items-center gap-1.5 transition-all shadow-md active:scale-95 border border-black"
+            className="w-full py-2 sm:py-2.5 rounded-xl border border-zinc-300 bg-white hover:bg-zinc-50 active:scale-98 text-black text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
           >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Add</span>
+            {added ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="text-emerald-600">ADDED</span>
+              </>
+            ) : (
+              'ADD TO CART'
+            )}
+          </button>
+
+          {/* BUY NOW Button */}
+          <button
+            type="button"
+            onClick={handleBuyNow}
+            className="w-full py-2 sm:py-2.5 rounded-xl bg-[#1c1c1e] hover:bg-black active:scale-98 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
+          >
+            BUY NOW
           </button>
         </div>
       </div>

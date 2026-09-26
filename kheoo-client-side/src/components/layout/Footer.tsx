@@ -1,144 +1,232 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShieldCheck, Truck, RotateCcw, Award, Share2, Globe, MessageCircle, Sparkles } from 'lucide-react';
+import { Mail, Phone, MapPin, CheckCircle2 } from 'lucide-react';
 
 export const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+      setEmail('');
+    }
+  };
+
   return (
-    <footer className="bg-white text-zinc-600 border-t border-zinc-200 pt-16 pb-12">
-      {/* Brand Value Propositions Banner */}
-      <div className="w-[90%] mx-auto mb-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-none bg-zinc-50 border border-zinc-200">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
-              <Truck className="w-6 h-6" />
-            </div>
-            <div>
-              <h5 className="text-sm font-bold text-black uppercase tracking-wider">Fast Express Delivery</h5>
-              <p className="text-xs text-zinc-500 mt-0.5">Free shipping across Bangladesh</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
-              <Award className="w-6 h-6" />
-            </div>
-            <div>
-              <h5 className="text-sm font-bold text-black uppercase tracking-wider">240+ GSM Heavy Cotton</h5>
-              <p className="text-xs text-zinc-500 mt-0.5">Pre-shrunk premium fabric</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
-              <RotateCcw className="w-6 h-6" />
-            </div>
-            <div>
-              <h5 className="text-sm font-bold text-black uppercase tracking-wider">7-Day Easy Returns</h5>
-              <p className="text-xs text-zinc-500 mt-0.5">Hassle-free size replacement</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-none bg-black text-white flex items-center justify-center shrink-0 shadow-md">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <div>
-              <h5 className="text-sm font-bold text-black uppercase tracking-wider">Secure Payment</h5>
-              <p className="text-xs text-zinc-500 mt-0.5">bKash, Nagad & SSLCommerz</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Footer Links */}
-      <div className="w-[90%] mx-auto grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-zinc-200 font-mono">
-        {/* Column 1: Brand Info */}
-        <div className="md:col-span-2 space-y-4">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/assets/logo/Kheoo-logo.png"
-              alt="KHEOO Logo"
-              width={36}
-              height={36}
-              className="w-9 h-9 object-contain"
-            />
-            <span className="text-xl font-black text-black tracking-widest uppercase">
-              KHEOO
+    <footer className="bg-black text-white pt-10 sm:pt-16 md:pt-20 pb-8 sm:pb-10 border-t border-zinc-900 font-sans">
+      <div className="w-[90%] mx-auto">
+        {/* Top Section: Newsletter Subscription */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-10 pb-8 sm:pb-14 md:pb-20 border-b border-zinc-800">
+          <div className="max-w-xl">
+            <span className="text-[10px] sm:text-[11px] font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-1.5 sm:mb-2">
+              JOIN THE INNER CIRCLE
             </span>
-          </Link>
-          <p className="text-xs leading-relaxed text-zinc-600 max-w-sm font-sans">
-            KHEOO is a premium streetwear brand based in Dhaka, Bangladesh, specializing in drop shoulder and oversized graphic tees crafted from 240+ GSM heavyweight combed cotton.
-          </p>
-          <p className="text-xs font-mono text-zinc-700 font-bold">
-            Contact: <a href="mailto:hello@kheoo.com" className="underline hover:text-black">hello@kheoo.com</a>
-          </p>
-          <div className="flex items-center gap-3 pt-2">
-            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Instagram">
-              <Share2 className="w-4 h-4" />
-            </a>
-            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Website">
-              <Globe className="w-4 h-4" />
-            </a>
-            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Community">
-              <MessageCircle className="w-4 h-4" />
-            </a>
-            <a href="#" className="w-9 h-9 rounded-none bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-black hover:border-black transition-colors" title="Drops">
-              <Sparkles className="w-4 h-4 text-black" />
-            </a>
+            <h2 className="text-2xl sm:text-4xl lg:text-4xl font-black text-white tracking-tight leading-snug sm:leading-[1.15]">
+              Subscribe to our newsletter
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400 mt-2 sm:mt-3 font-sans leading-relaxed">
+              Get secret drop alerts, exclusive 10% discount code & early access to upcoming streetwear collections.
+            </p>
+          </div>
+
+          <div className="w-full lg:w-auto">
+            {subscribed ? (
+              <div className="flex items-center gap-2.5 text-xs sm:text-sm bg-zinc-900 border border-zinc-700 text-white px-5 sm:px-7 py-3 sm:py-4 rounded-xl sm:rounded-full font-mono">
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0" />
+                <span>You&apos;re in! Check your inbox for code <strong>KHEOO10</strong>.</span>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleSubscribe}
+                className="flex flex-col sm:flex-row items-stretch sm:items-center bg-zinc-900/90 border border-zinc-800 focus-within:border-zinc-500 rounded-xl sm:rounded-full p-1 sm:p-1.5 transition-all w-full max-w-lg"
+              >
+                <div className="flex items-center flex-1 px-3 sm:px-4 py-2 sm:py-0">
+                  <Mail className="w-4 h-4 text-zinc-500 shrink-0 mr-2.5 sm:mr-3" />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address..."
+                    className="w-full bg-transparent text-white placeholder:text-zinc-500 text-xs sm:text-sm focus:outline-none font-mono"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-white hover:bg-zinc-200 text-black font-extrabold text-xs uppercase tracking-wider px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-lg sm:rounded-full transition-all shrink-0 active:scale-95 text-center mt-1 sm:mt-0"
+                >
+                  Subscribe
+                </button>
+              </form>
+            )}
           </div>
         </div>
 
-        {/* Column 2: Collections */}
-        <div>
-          <h4 className="text-xs font-bold text-black uppercase tracking-widest mb-4">Collections</h4>
-          <ul className="space-y-2.5 text-xs">
-            <li><Link href="/shop?category=anime" className="hover:text-black transition-colors">Anime Streetwear</Link></li>
-            <li><Link href="/shop?category=marvel" className="hover:text-black transition-colors">Marvel Drop Shoulders</Link></li>
-            <li><Link href="/shop?category=dc" className="hover:text-black transition-colors">DC Gothic Tees</Link></li>
-            <li><Link href="/shop?isNew=true" className="hover:text-black transition-colors">New Drop 01</Link></li>
-            <li><Link href="/shop?isBestSeller=true" className="hover:text-black transition-colors">Best Sellers</Link></li>
-          </ul>
+        {/* Middle Section: Main Content Grid (2 columns on mobile, 5 on desktop) */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-x-4 gap-y-8 sm:gap-10 py-8 sm:py-14 md:py-20 border-b border-zinc-800">
+          {/* Column 1: Brand Info (Spans 2 columns on mobile for clean intro) */}
+          <div className="col-span-2 lg:col-span-2 space-y-4">
+            <Link href="/" className="inline-block group">
+              <Image
+                src="/assets/logo/Kheoo-logo.png"
+                alt="KHEOO Logo"
+                width={80}
+                height={80}
+                className="w-14 h-14 sm:w-20 sm:h-20 object-contain brightness-0 invert group-hover:opacity-80 transition-opacity"
+                priority
+              />
+            </Link>
+            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-lg">
+              A sophisticated e-commerce apparel brand designed for modern and minimalist streetwear enthusiasts in Bangladesh, specializing in 240+ GSM drop shoulder heavy cotton tees.
+            </p>
+            <div>
+              <Link
+                href="/contact"
+                className="inline-block bg-white text-black text-xs font-extrabold px-5 sm:px-6 py-2.5 sm:py-3 rounded-full hover:bg-zinc-200 transition-colors"
+              >
+                Contact Kheoo
+              </Link>
+            </div>
+          </div>
+
+          {/* Column 2: Quick Links (Side by Side on mobile) */}
+          <div className="col-span-1 space-y-3 sm:space-y-4">
+            <h4 className="text-xs sm:text-sm font-bold text-white tracking-wider uppercase font-mono">Quick Links</h4>
+            <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-zinc-400">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-white transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop" className="hover:text-white transition-colors">
+                  Shop All Drops
+                </Link>
+              </li>
+              <li>
+                <Link href="/track-order" className="hover:text-white transition-colors">
+                  Track Order
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="hover:text-white transition-colors">
+                  Reviews & FAQ
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Policies & Support (Side by Side on mobile) */}
+          <div className="col-span-1 space-y-3 sm:space-y-4">
+            <h4 className="text-xs sm:text-sm font-bold text-white tracking-wider uppercase font-mono">Policies</h4>
+            <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-zinc-400">
+              <li>
+                <Link href="/terms" className="hover:text-white transition-colors">
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link href="/refund-policy" className="hover:text-white transition-colors">
+                  Return Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-white transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/shipping-policy" className="hover:text-white transition-colors">
+                  Shipping Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/size-guide" className="hover:text-white transition-colors">
+                  Size Guide
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Follow Us & Contact Details (Spans 2 cols on mobile) */}
+          <div className="col-span-2 lg:col-span-1 space-y-4 sm:space-y-5 pt-3 sm:pt-0 border-t border-zinc-900 lg:border-t-0">
+            <div>
+              <h4 className="text-xs sm:text-sm font-bold text-white tracking-wider uppercase font-mono mb-2.5 sm:mb-3.5">
+                Get in touch
+              </h4>
+              <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-zinc-400">
+                <li className="flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-zinc-400 shrink-0" />
+                  <a href="mailto:hello@kheoo.com" className="hover:text-white transition-colors truncate">
+                    hello@kheoo.com
+                  </a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-zinc-400 shrink-0" />
+                  <a href="tel:+8801711223344" className="hover:text-white transition-colors">
+                    +880 1711-223344
+                  </a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-zinc-400 shrink-0" />
+                  <span>Dhaka, Bangladesh</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[11px] sm:text-xs font-bold text-white uppercase tracking-wider mb-1.5 sm:mb-2 font-mono">
+                Follow us:
+              </h4>
+              <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1.5 text-xs text-zinc-400">
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                  Instagram
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                  Facebook
+                </a>
+                <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                  TikTok
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                  Twitter
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Column 3: Customer Care */}
-        <div>
-          <h4 className="text-xs font-bold text-black uppercase tracking-widest mb-4">Customer Care</h4>
-          <ul className="space-y-2.5 text-xs">
-            <li><Link href="/track-order" className="hover:text-black transition-colors">Track Order</Link></li>
-            <li><Link href="/faq" className="hover:text-black transition-colors">Frequently Asked Questions</Link></li>
-            <li><Link href="/contact" className="hover:text-black transition-colors">Contact Support</Link></li>
-            <li><Link href="/about" className="hover:text-black transition-colors">About KHEOO</Link></li>
-            <li><Link href="/dashboard" className="hover:text-black transition-colors">My Account</Link></li>
-          </ul>
-        </div>
+        {/* Sub-Footer: Clean Copyright & Payment Badges Only */}
+        <div className="pt-4 sm:pt-6 flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 text-[11px] sm:text-xs text-zinc-500 font-mono text-center md:text-left">
+          <p>© {new Date().getFullYear()} KHEOO. All rights reserved. Dhaka, Bangladesh.</p>
 
-        {/* Column 4: Legal & Policies */}
-        <div>
-          <h4 className="text-xs font-bold text-black uppercase tracking-widest mb-4">Policies</h4>
-          <ul className="space-y-2.5 text-xs">
-            <li><Link href="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link></li>
-            <li><Link href="/terms" className="hover:text-black transition-colors">Terms of Service</Link></li>
-            <li><Link href="/shipping-policy" className="hover:text-black transition-colors">Shipping Policy</Link></li>
-            <li><Link href="/refund-policy" className="hover:text-black transition-colors">Refund & Return Policy</Link></li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="w-[90%] mx-auto pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono">
-        <p className="text-zinc-500">
-          © {new Date().getFullYear()} KHEOO. All rights reserved. Premium Streetwear Apparel — Dhaka, Bangladesh.
-        </p>
-
-        <div className="flex items-center gap-2 text-zinc-700 text-[10px]">
-          <span className="bg-zinc-100 border border-zinc-200 px-2 py-1 rounded">bKash</span>
-          <span className="bg-zinc-100 border border-zinc-200 px-2 py-1 rounded">Nagad</span>
-          <span className="bg-zinc-100 border border-zinc-200 px-2 py-1 rounded">Rocket</span>
-          <span className="bg-zinc-100 border border-zinc-200 px-2 py-1 rounded">SSLCommerz</span>
-          <span className="bg-zinc-100 border border-zinc-200 px-2 py-1 rounded">Cash on Delivery</span>
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+            <span className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded font-bold">
+              bKash
+            </span>
+            <span className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded font-bold">
+              Nagad
+            </span>
+            <span className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded font-bold">
+              Rocket
+            </span>
+            <span className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded font-bold">
+              Visa / Mastercard
+            </span>
+            <span className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded font-bold">
+              Cash on Delivery
+            </span>
+          </div>
         </div>
       </div>
     </footer>

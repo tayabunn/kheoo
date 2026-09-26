@@ -5,74 +5,83 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const FeaturedCategories: React.FC = () => {
-  const rightCategories = [
+  const featuredLarge = {
+    name: 'Shirt & Denim Combo',
+    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=1200&auto=format&fit=crop&q=80',
+    link: '/shop?category=streetwear',
+  };
+
+  const gridCategories = [
     {
       name: 'DC & Marvel T-shirts',
       image: 'https://images.unsplash.com/photo-1635863138275-d9b33299680b?w=800&auto=format&fit=crop&q=80',
       link: '/shop?category=marvel',
     },
     {
-      name: 'Automobile T-shirts',
-      image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80',
-      link: '/shop?category=anime',
+      name: 'Denim and Trousers',
+      image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80',
+      link: '/shop?category=denim',
     },
     {
-      name: 'GTR Nismo T-shirts',
-      image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=80',
-      link: '/shop?category=dc',
+      name: 'Premium Brand T-shirts',
+      image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80',
+      link: '/shop?category=streetwear',
     },
     {
-      name: 'Islamic T-shirts',
-      image: 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&auto=format&fit=crop&q=80',
-      link: '/shop?category=islamic',
+      name: 'China Micro Spandex Polo',
+      image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=800&auto=format&fit=crop&q=80',
+      link: '/shop?category=polo',
     },
   ];
 
   return (
-    <section className="py-16 md:py-24 text-black border-b border-zinc-200">
+    <section className="py-8 sm:py-12 md:py-16 bg-white text-black">
       <div className="w-[90%] mx-auto">
         {/* Centered Heading */}
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-center text-black mb-10 md:mb-12 font-sans">
-          SHOP BY CATEGORY
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-black tracking-tight text-center text-black font-sans mb-6 sm:mb-8 md:mb-10">
+          Shop by category
         </h2>
 
-        {/* Category Grid: Left Large Feature + Right 2x2 Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
-          {/* Left Large Feature Card */}
+        {/* Categories Layout: Left Large Card (1 col) + Right 2x2 Grid (1 col) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
+          {/* Left: Large Featured Category */}
           <Link
-            href="/shop?category=polo"
-            className="group relative rounded-none overflow-hidden bg-zinc-100 border border-zinc-200 lg:col-span-6 min-h-[380px] sm:min-h-[460px] lg:min-h-[540px] flex flex-col justify-end"
+            href={featuredLarge.link}
+            className="group relative rounded-none overflow-hidden bg-zinc-100 aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-full min-h-[320px] sm:min-h-[420px] flex flex-col justify-end"
           >
             <Image
-              src="/assets/images/t-shirts/don-delfin-almonte-ebTNU_YTWgc-unsplash.jpg"
-              alt="China Micro Spandex Polo"
+              src={featuredLarge.image}
+              alt={featuredLarge.name}
               fill
               priority
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 brightness-95"
+              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 sm:p-8 flex flex-col justify-end">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight">
-                China Micro Spandex Polo
+            {/* Bottom Gradient Overlay + Text */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-5 sm:p-7 md:p-8 flex flex-col justify-end">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white text-left leading-tight drop-shadow-sm">
+                {featuredLarge.name}
               </h3>
             </div>
           </Link>
 
-          {/* Right 2x2 Grid */}
-          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            {rightCategories.map((cat, idx) => (
+          {/* Right: 2x2 Grid */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
+            {gridCategories.map((cat, idx) => (
               <Link
                 key={idx}
                 href={cat.link}
-                className="group relative rounded-none overflow-hidden bg-zinc-100 border border-zinc-200 aspect-square flex flex-col justify-end"
+                className="group relative rounded-none overflow-hidden bg-zinc-100 aspect-square flex flex-col justify-end"
               >
                 <Image
                   src={cat.image}
                   alt={cat.name}
                   fill
-                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700 brightness-95"
+                  priority={idx < 2}
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 sm:p-5 flex flex-col justify-end">
-                  <h3 className="text-base sm:text-lg font-bold text-white tracking-tight leading-snug">
+                {/* Bottom Gradient Overlay + Text */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-3.5 sm:p-5 md:p-6 flex flex-col justify-end">
+                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white text-left leading-snug drop-shadow-sm">
                     {cat.name}
                   </h3>
                 </div>
@@ -81,9 +90,16 @@ export const FeaturedCategories: React.FC = () => {
           </div>
         </div>
 
-
+        {/* Centered Button: VIEW ALL CATEGORIES */}
+        <div className="flex justify-center mt-8 sm:mt-10 md:mt-12">
+          <Link
+            href="/shop"
+            className="bg-[#181818] hover:bg-black text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-8 py-3.5 sm:px-10 sm:py-4 transition-all duration-300 active:scale-95 text-center shadow-none inline-block"
+          >
+            VIEW ALL CATEGORIES
+          </Link>
+        </div>
       </div>
     </section>
   );
 };
-

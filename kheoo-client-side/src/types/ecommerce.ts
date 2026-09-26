@@ -77,19 +77,27 @@ export interface OrderItem {
 }
 
 export interface Order {
-  id: string;
+  id?: string;
+  _id?: string;
   orderNumber: string;
   guestEmail?: string;
   guestName?: string;
+  customerName?: string;
+  customerPhone?: string;
   status: 'PENDING' | 'PROCESSING' | 'PACKED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
   paymentMethod: string;
   paymentStatus: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
+  orderSource?: 'ONLINE' | 'POS';
   subtotal: number;
   tax: number;
   shippingFee: number;
   discount: number;
   totalAmount: number;
+  cashReceived?: number;
+  changeAmount?: number;
+  notes?: string;
   shippingAddress: string;
   items: OrderItem[];
   createdAt: string;
 }
+

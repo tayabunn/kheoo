@@ -11,7 +11,7 @@ export default function WishlistPage() {
 
   return (
     <div className="py-12 bg-white text-black min-h-screen font-mono">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[90%] mx-auto">
         <div className="mb-8 border-b border-zinc-200 pb-6 flex items-center justify-between">
           <div>
             <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">

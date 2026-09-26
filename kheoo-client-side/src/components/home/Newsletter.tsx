@@ -27,7 +27,7 @@ export const Newsletter: React.FC = () => {
         <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black mt-2 mb-4">
           GET 10% OFF YOUR FIRST DROP
         </h2>
-        <p className="text-xs sm:text-sm text-zinc-600 max-w-md mx-auto mb-8 font-sans">
+        <p className="text-base sm:text-base text-zinc-600 max-w-full mx-auto mb-8">
           Subscribe to get secret drop codes, early access to Anime & Marvel collections, and exclusive streetwear giveaways
         </p>
 

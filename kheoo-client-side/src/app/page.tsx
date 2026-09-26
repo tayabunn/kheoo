@@ -2,6 +2,7 @@ import React from 'react';
 import { Hero } from '../components/home/Hero';
 import { FeaturedCategories } from '../components/home/FeaturedCategories';
 import { NewArrivals } from '../components/home/NewArrivals';
+import { NextDropCountdown } from '../components/home/NextDropCountdown';
 import { WhyChooseUs } from '../components/home/WhyChooseUs';
 import { Newsletter } from '../components/home/Newsletter';
 import { Product } from '../types/ecommerce';
@@ -253,8 +254,8 @@ export default async function HomePage() {
       <Hero />
       <FeaturedCategories />
       <NewArrivals products={products} />
+      <NextDropCountdown />
       <WhyChooseUs />
-      <Newsletter />
     </div>
   );
 }

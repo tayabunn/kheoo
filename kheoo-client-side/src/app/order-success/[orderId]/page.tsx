@@ -9,7 +9,7 @@ export default function OrderSuccessPage({ params }: { params: Promise<{ orderId
 
   return (
     <div className="py-20 bg-white text-black min-h-screen font-mono">
-      <div className="max-w-2xl mx-auto px-4 text-center">
+      <div className="w-[90%] max-w-2xl mx-auto text-center">
         <div className="w-20 h-20 rounded-full bg-black text-white flex items-center justify-center mx-auto mb-6 shadow-xl">
           <CheckCircle2 className="w-10 h-10" />
         </div>

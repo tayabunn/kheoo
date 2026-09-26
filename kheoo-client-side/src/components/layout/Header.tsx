@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingBag, Heart, Menu, X, ChevronDown, User } from 'lucide-react';
+import { Search, ShoppingBag, Heart, Menu, X, ChevronDown, User, ArrowRight } from 'lucide-react';
 import { AnnouncementBar } from './AnnouncementBar';
 import { MegaMenu } from './MegaMenu';
 import { useCartStore } from '../../store/useCartStore';
@@ -26,36 +26,29 @@ export const Header: React.FC = () => {
       <AnnouncementBar />
 
       <div className="w-[90%] mx-auto">
-        <div className="flex items-center justify-between h-24">
-          {/* Left: Mobile Toggle & Logo */}
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-zinc-700 hover:text-black"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-
+        <div className="flex items-center justify-between h-16 sm:h-18 lg:h-[76px]">
+          {/* Left: Logo Only (Aligned Left) */}
+          <div className="flex items-center">
             <Link href="/" className="flex items-center group">
               <Image
                 src="/assets/logo/Kheoo-logo.png"
                 alt="KHEOO Logo"
                 width={64}
                 height={64}
-                className="w-14 h-14 sm:w-16 sm:h-16 object-contain group-hover:opacity-80 transition-opacity"
+                className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 object-contain group-hover:opacity-80 transition-opacity"
                 priority
               />
             </Link>
           </div>
 
-          {/* Middle: Nav Links */}
-          <nav className="hidden lg:flex items-center gap-8 text-xs font-black tracking-widest uppercase text-black">
+          {/* Middle: Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-9 text-[13px] xl:text-sm font-black tracking-wider uppercase text-black">
             <Link href="/shop" className="hover:text-zinc-600 transition-colors py-2">
               SHOP ALL
             </Link>
 
             <div
-              className="relative py-6"
+              className="relative py-4"
               onMouseEnter={() => setActiveMenu('anime')}
               onMouseLeave={() => setActiveMenu(null)}
             >
@@ -63,13 +56,14 @@ export const Header: React.FC = () => {
                 href="/shop?category=anime"
                 className="flex items-center gap-1 hover:text-zinc-600 transition-colors"
               >
-                ANIME <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />
+                <span>ANIME</span>
+                <ChevronDown className="w-4 h-4 text-zinc-500" />
               </Link>
               {activeMenu === 'anime' && <MegaMenu category="anime" onClose={() => setActiveMenu(null)} />}
             </div>
 
             <div
-              className="relative py-6"
+              className="relative py-4"
               onMouseEnter={() => setActiveMenu('marvel')}
               onMouseLeave={() => setActiveMenu(null)}
             >
@@ -77,13 +71,14 @@ export const Header: React.FC = () => {
                 href="/shop?category=marvel"
                 className="flex items-center gap-1 hover:text-zinc-600 transition-colors"
               >
-                MARVEL <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />
+                <span>MARVEL</span>
+                <ChevronDown className="w-4 h-4 text-zinc-500" />
               </Link>
               {activeMenu === 'marvel' && <MegaMenu category="marvel" onClose={() => setActiveMenu(null)} />}
             </div>
 
             <div
-              className="relative py-6"
+              className="relative py-4"
               onMouseEnter={() => setActiveMenu('dc')}
               onMouseLeave={() => setActiveMenu(null)}
             >
@@ -91,77 +86,172 @@ export const Header: React.FC = () => {
                 href="/shop?category=dc"
                 className="flex items-center gap-1 hover:text-zinc-600 transition-colors"
               >
-                DC COMICS <ChevronDown className="w-3.5 h-3.5 text-zinc-500" />
+                <span>DC COMICS</span>
+                <ChevronDown className="w-4 h-4 text-zinc-500" />
               </Link>
               {activeMenu === 'dc' && <MegaMenu category="dc" onClose={() => setActiveMenu(null)} />}
             </div>
 
-            <Link href="/shop?isNew=true" className="hover:text-zinc-600 transition-colors py-2 font-black border-b-2 border-black">
-              NEW DROPS
+            <Link href="/shop?isNew=true" className="hover:text-zinc-600 transition-colors py-2 flex items-center gap-1">
+              <span>NEW DROPS</span>
             </Link>
           </nav>
 
-          {/* Right: Action Buttons */}
-          <div className="flex items-center gap-3">
+          {/* Right: Actions */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Search Icon (Visible everywhere) */}
             <button
               onClick={openSearch}
-              className="p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
-              title="Search"
+              className="h-10 w-10 flex items-center justify-center text-zinc-800 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
+              title="Search Drops"
             >
               <Search className="w-5 h-5" />
             </button>
 
+            {/* Desktop-Only Wishlist Button */}
             <Link
               href="/wishlist"
-              className="relative p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
+              className="hidden lg:flex relative h-10 w-10 items-center justify-center text-zinc-800 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
               title="Wishlist"
             >
               <Heart className="w-5 h-5" />
               {wishlistItems.length > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 bg-black text-white text-[10px] font-black rounded-none flex items-center justify-center font-mono">
+                <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-black text-white text-[10px] font-black flex items-center justify-center font-mono">
                   {wishlistItems.length}
                 </span>
               )}
             </Link>
 
+            {/* Desktop-Only Cart Button (Identical h-10 height) */}
             <button
               onClick={openCart}
-              className="relative p-2.5 bg-black text-white font-bold hover:bg-zinc-800 rounded-none flex items-center gap-2 transition-all shadow-md active:scale-95 border border-black"
+              className="hidden lg:flex relative h-10 px-3.5 bg-black text-white font-bold hover:bg-zinc-800 rounded-none items-center justify-center gap-2 transition-all shadow-sm active:scale-95 border border-black"
               title="Cart"
             >
-              <ShoppingBag className="w-5 h-5 text-white" />
-              <span className="hidden sm:inline-block text-xs font-black font-mono">
+              <ShoppingBag className="w-4 h-4 text-white" />
+              <span className="text-xs font-black font-mono">
                 {totalCartCount}
               </span>
             </button>
 
-            {/* Account Icon / Dropdown */}
-            <UserAccountButton />
+            {/* Desktop User Account Button (Identical h-10 height) */}
+            <div className="hidden lg:flex items-center">
+              <UserAccountButton />
+            </div>
+
+            {/* Mobile-Only Hamburger Toggle on the RIGHT */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-black hover:bg-zinc-100 transition-colors"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer (with shifted Wishlist, Cart & navigation) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-zinc-200 px-6 py-6 space-y-4 font-mono text-xs uppercase text-black">
-          <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="block font-bold hover:text-zinc-600 py-1">
-            Shop All Drops
-          </Link>
-          <Link href="/shop?category=anime" onClick={() => setMobileMenuOpen(false)} className="block font-bold hover:text-zinc-600 py-1">
-            Anime Streetwear
-          </Link>
-          <Link href="/shop?category=marvel" onClick={() => setMobileMenuOpen(false)} className="block font-bold hover:text-zinc-600 py-1">
-            Marvel Drop Shoulders
-          </Link>
-          <Link href="/shop?category=dc" onClick={() => setMobileMenuOpen(false)} className="block font-bold hover:text-zinc-600 py-1">
-            DC Gothic Collection
-          </Link>
-          <Link href="/track-order" onClick={() => setMobileMenuOpen(false)} className="block text-zinc-600 hover:text-black py-1">
-            Track Order Status
-          </Link>
-          <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="block text-black font-black py-1">
-            Login / Register
-          </Link>
+        <div className="lg:hidden bg-white border-b border-zinc-200 px-5 py-5 space-y-5 font-mono text-xs text-black animate-in fade-in slide-in-from-top duration-200">
+          {/* Quick Action Cards: Cart & Wishlist */}
+          <div className="grid grid-cols-2 gap-3 pb-3 border-b border-zinc-200">
+            {/* Cart Button */}
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openCart();
+              }}
+              className="flex items-center justify-between p-3.5 bg-black text-white font-bold text-xs uppercase transition-all active:scale-98 shadow-sm border border-black"
+            >
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="w-4 h-4" />
+                <span>Bag / Cart</span>
+              </div>
+              <span className="bg-white text-black px-2 py-0.5 text-[11px] font-black rounded-none">
+                {totalCartCount}
+              </span>
+            </button>
+
+            {/* Wishlist Link */}
+            <Link
+              href="/wishlist"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between p-3.5 bg-zinc-100 hover:bg-zinc-200 text-black font-bold text-xs uppercase transition-all active:scale-98 border border-zinc-300"
+            >
+              <div className="flex items-center gap-2">
+                <Heart className="w-4 h-4" />
+                <span>Saved</span>
+              </div>
+              <span className="bg-black text-white px-2 py-0.5 text-[11px] font-black rounded-none">
+                {wishlistItems.length}
+              </span>
+            </Link>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="space-y-1 font-mono uppercase text-xs">
+            <Link
+              href="/shop"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-black text-black border-b border-zinc-100"
+            >
+              <span>Shop All Drops</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/shop?category=anime"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+            >
+              <span>Anime Streetwear</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/shop?category=marvel"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+            >
+              <span>Marvel Collection</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/shop?category=dc"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+            >
+              <span>DC Comics Series</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/shop?isNew=true"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+            >
+              <span>🔥 New Drops</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/track-order"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-700 border-b border-zinc-100"
+            >
+              <span>Track Order Status</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+          </div>
+
+          {/* User Account / Auth Section */}
+          <div className="pt-2">
+            <Link
+              href="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-3 bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-sm"
+            >
+              <User className="w-4 h-4" />
+              <span>Member Sign In / Account</span>
+            </Link>
+          </div>
         </div>
       )}
     </header>
@@ -194,7 +284,7 @@ const UserAccountButton: React.FC = () => {
     return (
       <Link
         href="/login"
-        className="hidden sm:flex p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
+        className="h-10 w-10 flex items-center justify-center text-zinc-800 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
         title="Sign In / Register"
       >
         <User className="w-5 h-5" />
@@ -203,10 +293,10 @@ const UserAccountButton: React.FC = () => {
   }
 
   return (
-    <div className="relative hidden sm:block">
+    <div className="relative">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-2 p-1.5 border border-zinc-300 hover:border-black transition-colors rounded-none bg-zinc-50"
+        className="h-10 px-3 flex items-center gap-2 border border-zinc-300 hover:border-black transition-colors rounded-none bg-zinc-50 shadow-sm active:scale-98"
         title={user.name || user.email}
       >
         {user.avatar ? (
@@ -228,19 +318,20 @@ const UserAccountButton: React.FC = () => {
             <p className="text-[10px] text-zinc-500 truncate">{user.email}</p>
           </div>
           <Link
-            href="/track-order"
+            href="/admin/dashboard?tab=pos"
             onClick={() => setDropdownOpen(false)}
-            className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100 uppercase"
+            className="block px-4 py-2 text-emerald-600 hover:bg-emerald-50 uppercase font-black"
           >
-            My Orders
+            ⚡ POS Terminal
           </Link>
           <Link
-            href="/wishlist"
+            href="/admin/dashboard"
             onClick={() => setDropdownOpen(false)}
-            className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100 uppercase"
+            className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100 uppercase font-bold"
           >
-            Wishlist
+            Admin Dashboard
           </Link>
+
           <button
             onClick={handleLogout}
             className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 uppercase font-bold border-t border-zinc-100 mt-1"

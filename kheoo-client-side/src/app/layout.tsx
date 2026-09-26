@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '../components/layout/Header';
-import { Footer } from '../components/layout/Footer';
-import { CartDrawer } from '../components/layout/CartDrawer';
-import { SearchDrawer } from '../components/layout/SearchDrawer';
-import { QuickViewModal } from '../components/product/QuickViewModal';
+import { ConditionalLayout } from '../components/layout/ConditionalLayout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,14 +21,9 @@ export default function RootLayout({
         className={`${inter.className} bg-white text-black antialiased selection:bg-black selection:text-white flex flex-col min-h-screen`}
         suppressHydrationWarning
       >
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-
-        <CartDrawer />
-        <SearchDrawer />
-        <QuickViewModal />
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   );
 }
+

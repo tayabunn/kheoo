@@ -25,8 +25,11 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
       filter.$or = [
         { name: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
+        { slug: { $regex: search, $options: 'i' } },
+        { 'variants.sku': { $regex: search, $options: 'i' } },
       ];
     }
+
 
     if (isNew === 'true') filter.isNewProduct = true;
     if (isBestSeller === 'true') filter.isBestSeller = true;

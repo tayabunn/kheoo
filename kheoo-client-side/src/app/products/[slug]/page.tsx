@@ -86,7 +86,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
   return (
     <div className="py-12 bg-white text-black min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[90%] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
           <div className="lg:col-span-7 space-y-4">
             <div className="relative aspect-[3/4] w-full bg-zinc-100 rounded-lg overflow-hidden border border-zinc-200 shadow-xl">

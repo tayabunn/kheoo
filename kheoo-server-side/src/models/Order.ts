@@ -12,15 +12,22 @@ export interface IOrderItem {
 
 export interface IOrder extends Document {
   orderNumber: string;
-  guestEmail: string;
-  guestName: string;
-  shippingAddress: string;
+  guestEmail?: string;
+  guestName?: string;
+  customerName?: string;
+  customerPhone?: string;
+  shippingAddress?: string;
   paymentMethod: string;
+  paymentStatus: 'PAID' | 'PENDING' | 'REFUNDED';
+  orderSource: 'ONLINE' | 'POS';
   subtotal: number;
   tax: number;
   shippingFee: number;
   discount: number;
   totalAmount: number;
+  cashReceived?: number;
+  changeAmount?: number;
+  notes?: string;
   status: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
   items: IOrderItem[];
 }
@@ -38,15 +45,30 @@ const orderItemSchema = new Schema<IOrderItem>({
 const orderSchema = new Schema<IOrder>(
   {
     orderNumber: { type: String, required: true, unique: true },
-    guestEmail: { type: String, required: true },
-    guestName: { type: String, required: true },
-    shippingAddress: { type: String, required: true },
-    paymentMethod: { type: String, default: 'Cash On Delivery' },
+    guestEmail: { type: String, default: 'pos@kheoo.com' },
+    guestName: { type: String, default: 'Walk-in Customer' },
+    customerName: { type: String },
+    customerPhone: { type: String },
+    shippingAddress: { type: String, default: 'In-Store Counter' },
+    paymentMethod: { type: String, default: 'Cash' },
+    paymentStatus: {
+      type: String,
+      enum: ['PAID', 'PENDING', 'REFUNDED'],
+      default: 'PAID',
+    },
+    orderSource: {
+      type: String,
+      enum: ['ONLINE', 'POS'],
+      default: 'ONLINE',
+    },
     subtotal: { type: Number, required: true },
     tax: { type: Number, default: 0 },
     shippingFee: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
     totalAmount: { type: Number, required: true },
+    cashReceived: { type: Number, default: 0 },
+    changeAmount: { type: Number, default: 0 },
+    notes: { type: String },
     status: {
       type: String,
       enum: ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'],
@@ -60,3 +82,4 @@ const orderSchema = new Schema<IOrder>(
 );
 
 export const Order = model<IOrder>('Order', orderSchema);
+

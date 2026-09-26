@@ -58,7 +58,7 @@ export default function TrackOrderPage() {
 
   return (
     <div className="py-16 bg-white text-black min-h-screen font-mono">
-      <div className="max-w-3xl mx-auto px-4">
+      <div className="w-[90%] mx-auto">
         <div className="text-center mb-10">
           <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
             REAL-TIME TRACKING
