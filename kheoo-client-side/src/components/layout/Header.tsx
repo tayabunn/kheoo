@@ -135,13 +135,8 @@ export const Header: React.FC = () => {
               </span>
             </button>
 
-            <Link
-              href="/login"
-              className="hidden sm:flex p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
-              title="Account"
-            >
-              <User className="w-5 h-5" />
-            </Link>
+            {/* Account Icon / Dropdown */}
+            <UserAccountButton />
           </div>
         </div>
       </div>
@@ -170,5 +165,90 @@ export const Header: React.FC = () => {
         </div>
       )}
     </header>
+  );
+};
+
+const UserAccountButton: React.FC = () => {
+  const [user, setUser] = useState<{ name?: string; email?: string; avatar?: string } | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('kheoo_user');
+    if (saved) {
+      try {
+        setUser(JSON.parse(saved));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('kheoo_user');
+    setUser(null);
+    setDropdownOpen(false);
+    window.location.href = '/login';
+  };
+
+  if (!user) {
+    return (
+      <Link
+        href="/login"
+        className="hidden sm:flex p-2 text-zinc-700 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
+        title="Sign In / Register"
+      >
+        <User className="w-5 h-5" />
+      </Link>
+    );
+  }
+
+  return (
+    <div className="relative hidden sm:block">
+      <button
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="flex items-center gap-2 p-1.5 border border-zinc-300 hover:border-black transition-colors rounded-none bg-zinc-50"
+        title={user.name || user.email}
+      >
+        {user.avatar ? (
+          <img src={user.avatar} alt="User Avatar" className="w-6 h-6 rounded-full object-cover" />
+        ) : (
+          <div className="w-6 h-6 rounded-full bg-black text-white text-[10px] font-mono font-bold flex items-center justify-center uppercase">
+            {(user.name || user.email || 'U')[0]}
+          </div>
+        )}
+        <span className="text-xs font-mono font-bold uppercase max-w-[80px] truncate">
+          {user.name ? user.name.split(' ')[0] : 'Account'}
+        </span>
+      </button>
+
+      {dropdownOpen && (
+        <div className="absolute right-0 mt-2 w-48 bg-white border border-zinc-200 shadow-xl py-2 z-50 font-mono text-xs">
+          <div className="px-4 py-2 border-b border-zinc-100">
+            <p className="font-bold text-black truncate">{user.name || 'User'}</p>
+            <p className="text-[10px] text-zinc-500 truncate">{user.email}</p>
+          </div>
+          <Link
+            href="/track-order"
+            onClick={() => setDropdownOpen(false)}
+            className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100 uppercase"
+          >
+            My Orders
+          </Link>
+          <Link
+            href="/wishlist"
+            onClick={() => setDropdownOpen(false)}
+            className="block px-4 py-2 text-zinc-700 hover:bg-zinc-100 uppercase"
+          >
+            Wishlist
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 uppercase font-bold border-t border-zinc-100 mt-1"
+          >
+            Sign Out
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
