@@ -239,6 +239,14 @@ export const Header: React.FC = () => {
               <span>Track Order Status</span>
               <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
             </Link>
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-700 border-b border-zinc-100"
+            >
+              <span>Contact Support</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
           </div>
 
           {/* User Account / Auth Section */}
