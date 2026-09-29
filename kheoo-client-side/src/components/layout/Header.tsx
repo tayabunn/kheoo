@@ -3,15 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingBag, Heart, Menu, X, ChevronDown, User, ArrowRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Search, ShoppingBag, Heart, Menu, X, User, ArrowRight } from 'lucide-react';
 import { AnnouncementBar } from './AnnouncementBar';
-import { MegaMenu } from './MegaMenu';
 import { useCartStore } from '../../store/useCartStore';
 import { useWishlistStore } from '../../store/useWishlistStore';
 import { useSearchStore } from '../../store/useSearchStore';
 
 export const Header: React.FC = () => {
-  const [activeMenu, setActiveMenu] = useState<'anime' | 'marvel' | 'dc' | null>(null);
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const cartItems = useCartStore((state) => state.items);
@@ -21,14 +21,17 @@ export const Header: React.FC = () => {
 
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  const isProductsActive = pathname === '/products' || pathname.startsWith('/shop');
+  const isCategoriesActive = pathname.startsWith('/categories');
+
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-zinc-200 text-black">
       <AnnouncementBar />
 
       <div className="w-[90%] mx-auto">
         <div className="flex items-center justify-between h-16 sm:h-18 lg:h-[76px]">
-          {/* Left: Logo Only (Aligned Left) */}
-          <div className="flex items-center">
+          {/* Left: Logo & Primary 2 Navigation Tabs (Matching Image 1 reference) */}
+          <div className="flex items-center gap-8 xl:gap-12">
             <Link href="/" className="flex items-center group">
               <Image
                 src="/assets/logo/Kheoo-logo.png"
@@ -39,70 +42,39 @@ export const Header: React.FC = () => {
                 priority
               />
             </Link>
+
+            {/* Desktop Navigation Links: Exactly PRODUCTS and CATEGORIES as in Image 1 */}
+            <nav className="hidden lg:flex items-center gap-3 text-xs xl:text-sm font-black tracking-wider uppercase text-black font-sans">
+              <Link
+                href="/products"
+                className={`px-4 py-1.5 transition-all uppercase tracking-wider ${
+                  isProductsActive
+                    ? 'border border-black font-black text-black bg-zinc-50'
+                    : 'text-zinc-600 hover:text-black border border-transparent hover:border-zinc-300'
+                }`}
+              >
+                PRODUCTS
+              </Link>
+
+              <Link
+                href="/categories"
+                className={`px-4 py-1.5 transition-all uppercase tracking-wider ${
+                  isCategoriesActive
+                    ? 'border border-black font-black text-black bg-zinc-50'
+                    : 'text-zinc-600 hover:text-black border border-transparent hover:border-zinc-300'
+                }`}
+              >
+                CATEGORIES
+              </Link>
+            </nav>
           </div>
-
-          {/* Middle: Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-7 xl:gap-9 text-[13px] xl:text-sm font-black tracking-wider uppercase text-black">
-            <Link href="/shop" className="hover:text-zinc-600 transition-colors py-2">
-              SHOP ALL
-            </Link>
-
-            <div
-              className="relative py-4"
-              onMouseEnter={() => setActiveMenu('anime')}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <Link
-                href="/shop?category=anime"
-                className="flex items-center gap-1 hover:text-zinc-600 transition-colors"
-              >
-                <span>ANIME</span>
-                <ChevronDown className="w-4 h-4 text-zinc-500" />
-              </Link>
-              {activeMenu === 'anime' && <MegaMenu category="anime" onClose={() => setActiveMenu(null)} />}
-            </div>
-
-            <div
-              className="relative py-4"
-              onMouseEnter={() => setActiveMenu('marvel')}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <Link
-                href="/shop?category=marvel"
-                className="flex items-center gap-1 hover:text-zinc-600 transition-colors"
-              >
-                <span>MARVEL</span>
-                <ChevronDown className="w-4 h-4 text-zinc-500" />
-              </Link>
-              {activeMenu === 'marvel' && <MegaMenu category="marvel" onClose={() => setActiveMenu(null)} />}
-            </div>
-
-            <div
-              className="relative py-4"
-              onMouseEnter={() => setActiveMenu('dc')}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <Link
-                href="/shop?category=dc"
-                className="flex items-center gap-1 hover:text-zinc-600 transition-colors"
-              >
-                <span>DC COMICS</span>
-                <ChevronDown className="w-4 h-4 text-zinc-500" />
-              </Link>
-              {activeMenu === 'dc' && <MegaMenu category="dc" onClose={() => setActiveMenu(null)} />}
-            </div>
-
-            <Link href="/shop?isNew=true" className="hover:text-zinc-600 transition-colors py-2 flex items-center gap-1">
-              <span>NEW DROPS</span>
-            </Link>
-          </nav>
 
           {/* Right: Actions */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Search Icon (Visible everywhere) */}
+            {/* Search Icon */}
             <button
               onClick={openSearch}
-              className="h-10 w-10 flex items-center justify-center text-zinc-800 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
+              className="h-10 w-10 flex items-center justify-center text-zinc-800 hover:text-black transition-colors rounded-none hover:bg-zinc-100 cursor-pointer"
               title="Search Drops"
             >
               <Search className="w-5 h-5" />
@@ -122,10 +94,10 @@ export const Header: React.FC = () => {
               )}
             </Link>
 
-            {/* Desktop-Only Cart Button (Identical h-10 height) */}
+            {/* Desktop-Only Cart Button */}
             <button
               onClick={openCart}
-              className="hidden lg:flex relative h-10 px-3.5 bg-black text-white font-bold hover:bg-zinc-800 rounded-none items-center justify-center gap-2 transition-all shadow-sm active:scale-95 border border-black"
+              className="hidden lg:flex relative h-10 px-3.5 bg-black text-white font-bold hover:bg-zinc-800 rounded-none items-center justify-center gap-2 transition-all shadow-sm active:scale-95 border border-black cursor-pointer"
               title="Cart"
             >
               <ShoppingBag className="w-4 h-4 text-white" />
@@ -134,7 +106,7 @@ export const Header: React.FC = () => {
               </span>
             </button>
 
-            {/* Desktop User Account Button (Identical h-10 height) */}
+            {/* Desktop User Account Button */}
             <div className="hidden lg:flex items-center">
               <UserAccountButton />
             </div>
@@ -142,7 +114,7 @@ export const Header: React.FC = () => {
             {/* Mobile-Only Hamburger Toggle on the RIGHT */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-black hover:bg-zinc-100 transition-colors"
+              className="lg:hidden p-2 text-black hover:bg-zinc-100 transition-colors cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -151,7 +123,7 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer (with shifted Wishlist, Cart & navigation) */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-zinc-200 px-5 py-5 space-y-5 font-mono text-xs text-black animate-in fade-in slide-in-from-top duration-200">
           {/* Quick Action Cards: Cart & Wishlist */}
@@ -162,7 +134,7 @@ export const Header: React.FC = () => {
                 setMobileMenuOpen(false);
                 openCart();
               }}
-              className="flex items-center justify-between p-3.5 bg-black text-white font-bold text-xs uppercase transition-all active:scale-98 shadow-sm border border-black"
+              className="flex items-center justify-between p-3.5 bg-black text-white font-bold text-xs uppercase transition-all active:scale-98 shadow-sm border border-black cursor-pointer"
             >
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4" />
@@ -189,16 +161,37 @@ export const Header: React.FC = () => {
             </Link>
           </div>
 
-          {/* Navigation Links */}
-          <div className="space-y-1 font-mono uppercase text-xs">
+          {/* Primary Navigation Tabs */}
+          <div className="grid grid-cols-2 gap-2 pb-3 border-b border-zinc-200">
             <Link
-              href="/shop"
+              href="/products"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-black text-black border-b border-zinc-100"
+              className={`p-3 text-center uppercase font-black tracking-wider transition-colors border ${
+                isProductsActive
+                  ? 'bg-black text-white border-black'
+                  : 'bg-zinc-100 text-zinc-800 border-zinc-200 hover:bg-zinc-200'
+              }`}
             >
-              <span>Shop All Drops</span>
-              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+              Products
             </Link>
+            <Link
+              href="/categories"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`p-3 text-center uppercase font-black tracking-wider transition-colors border ${
+                isCategoriesActive
+                  ? 'bg-black text-white border-black'
+                  : 'bg-zinc-100 text-zinc-800 border-zinc-200 hover:bg-zinc-200'
+              }`}
+            >
+              Categories
+            </Link>
+          </div>
+
+          {/* Quick Filters / Subcategories */}
+          <div className="space-y-1 font-mono uppercase text-xs">
+            <span className="text-[10px] font-bold text-zinc-400 tracking-widest px-2 pb-1 block">
+              FILTER COLLECTIONS
+            </span>
             <Link
               href="/shop?category=anime"
               onClick={() => setMobileMenuOpen(false)}
@@ -221,6 +214,22 @@ export const Header: React.FC = () => {
               className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
             >
               <span>DC Comics Series</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/shop?category=polo"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+            >
+              <span>China Micro Spandex Polo</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+            </Link>
+            <Link
+              href="/shop?category=islamic"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+            >
+              <span>Islamic Calligraphy</span>
               <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
             </Link>
             <Link
@@ -292,7 +301,7 @@ const UserAccountButton: React.FC = () => {
     return (
       <Link
         href="/login"
-        className="h-10 w-10 flex items-center justify-center text-zinc-800 hover:text-black transition-colors rounded-none hover:bg-zinc-100"
+        className="h-10 w-10 flex items-center justify-center text-zinc-800 hover:text-black transition-colors rounded-none hover:bg-zinc-100 cursor-pointer"
         title="Sign In / Register"
       >
         <User className="w-5 h-5" />
@@ -304,7 +313,7 @@ const UserAccountButton: React.FC = () => {
     <div className="relative">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="h-10 px-3 flex items-center gap-2 border border-zinc-300 hover:border-black transition-colors rounded-none bg-zinc-50 shadow-sm active:scale-98"
+        className="h-10 px-3 flex items-center gap-2 border border-zinc-300 hover:border-black transition-colors rounded-none bg-zinc-50 shadow-sm active:scale-98 cursor-pointer"
         title={user.name || user.email}
       >
         {user.avatar ? (
@@ -342,7 +351,7 @@ const UserAccountButton: React.FC = () => {
 
           <button
             onClick={handleLogout}
-            className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 uppercase font-bold border-t border-zinc-100 mt-1"
+            className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 uppercase font-bold border-t border-zinc-100 mt-1 cursor-pointer"
           >
             Sign Out
           </button>
