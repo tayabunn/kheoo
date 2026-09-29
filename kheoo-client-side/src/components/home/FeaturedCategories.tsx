@@ -93,7 +93,7 @@ export const FeaturedCategories: React.FC = () => {
         {/* Centered Button: VIEW ALL CATEGORIES */}
         <div className="flex justify-center mt-8 sm:mt-10 md:mt-12">
           <Link
-            href="/shop"
+            href="/categories"
             className="bg-[#181818] hover:bg-black text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-8 py-3.5 sm:px-10 sm:py-4 transition-all duration-300 active:scale-95 text-center shadow-none inline-block"
           >
             VIEW ALL CATEGORIES
