@@ -109,6 +109,16 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/products" className="hover:text-white transition-colors">
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link href="/categories" className="hover:text-white transition-colors">
+                  Categories
+                </Link>
+              </li>
+              <li>
                 <Link href="/shop" className="hover:text-white transition-colors">
                   Shop All Drops
                 </Link>
