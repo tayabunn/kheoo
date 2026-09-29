@@ -89,23 +89,53 @@ function ShopContent() {
     if (categoryFilter === 'marvel') return 'MARVEL DROP SHOULDER COLLECTION';
     if (categoryFilter === 'dc') return 'DC COMICS GOTHIC TACTICAL';
     if (categoryFilter === 'polo') return 'CHINA MICRO SPANDEX POLO';
-    return 'ALL DROP SHOULDER TEES';
+    if (categoryFilter === 'islamic') return 'ISLAMIC ARABIC CALLIGRAPHY';
+    if (categoryFilter === 'streetwear') return 'STREETWEAR & DENIM DROPS';
+    return 'ALL PRODUCTS & DROPS';
   };
 
   return (
-    <div className="py-8 sm:py-12 md:py-16 bg-white text-black min-h-screen">
+    <div className="py-6 sm:py-10 md:py-12 bg-white text-black min-h-screen">
       <div className="w-[90%] mx-auto">
-        {/* Header Title Section */}
-        <div className="mb-3 sm:mb-4 border-b border-zinc-200 pb-3 sm:pb-4">
-          <div className="flex items-center gap-2 text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest mb-1">
-            <span>KHEOO STORE</span>
-            <span>/</span>
-            <span className="text-black font-extrabold">{categoryFilter.toUpperCase()}</span>
-          </div>
+        {/* Breadcrumb matching Image 1 format */}
+        <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6">
+          <ol className="flex items-center gap-1.5 text-xs sm:text-sm font-sans text-zinc-500">
+            <li>
+              <button onClick={() => router.push('/')} className="hover:text-black transition-colors cursor-pointer">
+                Home
+              </button>
+            </li>
+            <li>
+              <span className="text-zinc-400">&gt;</span>
+            </li>
+            <li>
+              <button
+                onClick={() => handleCategoryChange('all')}
+                className={`transition-colors cursor-pointer ${
+                  categoryFilter === 'all' && !searchTerm ? 'text-black font-bold' : 'hover:text-black'
+                }`}
+              >
+                Products
+              </button>
+            </li>
+            {categoryFilter !== 'all' && (
+              <>
+                <li>
+                  <span className="text-zinc-400">&gt;</span>
+                </li>
+                <li className="text-black font-bold capitalize">
+                  {categoryFilter}
+                </li>
+              </>
+            )}
+          </ol>
+        </nav>
 
+        {/* Header Title Section */}
+        <div className="mb-4 sm:mb-6 border-b border-zinc-200 pb-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
             <div>
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-black">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tight text-black">
                 {getHeaderTitle()}
               </h1>
               <p className="text-xs sm:text-sm text-zinc-500 mt-1 font-mono">
@@ -126,7 +156,7 @@ function ShopContent() {
           </div>
         </div>
 
-        {/* Quick Franchise Tag Badges - Larger font size & sleek padding */}
+        {/* Quick Franchise Tag Badges */}
         <div className="mb-4 sm:mb-5 flex flex-wrap items-center gap-2 sm:gap-2.5">
           <span className="text-xs font-mono font-black text-zinc-900 uppercase tracking-wider mr-1 hidden sm:inline">
             POPULAR:
@@ -145,7 +175,7 @@ function ShopContent() {
             <button
               key={idx}
               onClick={() => handleSubcategoryClick(tag.kw, tag.cat)}
-              className={`text-xs sm:text-[13px] font-mono font-bold px-4 py-2 sm:px-4.5 sm:py-2 rounded-xl sm:rounded-full border transition-all cursor-pointer ${
+              className={`text-xs sm:text-[13px] font-mono font-bold px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition-all cursor-pointer ${
                 searchTerm.toLowerCase() === tag.kw.toLowerCase()
                   ? 'bg-black text-white border-black font-extrabold'
                   : 'bg-white text-zinc-800 border-zinc-300 hover:border-black hover:text-black hover:bg-zinc-50'
@@ -161,14 +191,16 @@ function ShopContent() {
           {/* Category Tabs */}
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider flex items-center gap-1.5 mr-1">
-              <Filter className="w-3.5 h-3.5 text-black" /> Universe:
+              <Filter className="w-3.5 h-3.5 text-black" /> Filter:
             </span>
             {[
-              { id: 'all', label: 'All' },
+              { id: 'all', label: 'All Products' },
               { id: 'anime', label: 'Anime' },
               { id: 'marvel', label: 'Marvel' },
               { id: 'dc', label: 'DC Comics' },
               { id: 'polo', label: 'Polo' },
+              { id: 'islamic', label: 'Islamic' },
+              { id: 'streetwear', label: 'Denim & Streetwear' },
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -191,11 +223,11 @@ function ShopContent() {
               }}
               className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
                 onlyNewDrops
-                  ? 'bg-amber-500 text-black font-black'
+                  ? 'bg-black text-white font-black'
                   : 'bg-white border border-zinc-200 text-zinc-700 hover:text-black'
               }`}
             >
-              <Flame className="w-3.5 h-3.5" />
+              <Flame className="w-3.5 h-3.5 text-amber-500" />
               <span>New Drops</span>
             </button>
           </div>
