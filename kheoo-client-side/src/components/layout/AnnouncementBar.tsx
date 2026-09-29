@@ -1,38 +1,62 @@
 'use client';
 
 import React from 'react';
-import { Truck, ShieldCheck, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 export const AnnouncementBar: React.FC = () => {
+  const items = Array.from({ length: 12 });
+
   return (
-    <div className="bg-black text-white font-mono py-2 px-3 sm:px-4 border-b border-zinc-800">
-      <div className="w-[90%] mx-auto flex items-center justify-between">
-        {/* Left perks (desktop) */}
-        <div className="hidden md:flex items-center gap-4 text-white text-xs">
-          <span className="flex items-center gap-1.5">
-            <Truck className="w-3.5 h-3.5 text-white" /> FREE EXPRESS SHIPPING OVER $50
-          </span>
-          <span className="text-zinc-600">•</span>
-          <span className="flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-white" /> 240+ GSM HEAVYWEIGHT COTTON
-          </span>
+    <div className="relative w-full bg-black text-white overflow-hidden border-b border-zinc-800 py-2 sm:py-2.5 z-40 select-none">
+      <div className="flex w-max animate-marquee hover:[animation-play-state:paused] cursor-pointer">
+        {/* First track */}
+        <div className="flex items-center shrink-0">
+          {items.map((_, idx) => (
+            <div key={`track1-${idx}`} className="flex items-center gap-5 sm:gap-8 mx-3 sm:mx-5 shrink-0">
+              <span className="flex items-center gap-2 text-xs sm:text-sm font-black tracking-widest uppercase text-white font-mono">
+                <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                <span>USE CODE</span>
+                <span className="bg-white text-black font-black px-2 py-0.5 text-xs sm:text-sm tracking-wider">
+                  KHEOO10
+                </span>
+                <span>FOR 10% OFF</span>
+              </span>
+              <span className="text-zinc-500 font-mono text-xs">✦</span>
+            </div>
+          ))}
         </div>
 
-        {/* Center promo code (mobile & desktop responsive) */}
-        <div className="w-full md:w-auto text-center flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-white font-semibold">
-          <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 animate-pulse shrink-0" />
-          <span className="truncate">
-            USE CODE <span className="text-black bg-white px-1.5 py-0.5 rounded-none font-black uppercase text-[9px] sm:text-[10px] mx-1">KHEOO10</span> FOR 10% OFF
-          </span>
-        </div>
-
-        {/* Right quick links (desktop) */}
-        <div className="hidden lg:flex items-center gap-3 text-white text-[11px]">
-          <a href="/track-order" className="hover:text-zinc-300 transition-colors">TRACK ORDER</a>
-          <span>•</span>
-          <a href="/contact" className="hover:text-zinc-300 transition-colors">SUPPORT</a>
+        {/* Duplicate track for seamless infinite loop */}
+        <div className="flex items-center shrink-0" aria-hidden="true">
+          {items.map((_, idx) => (
+            <div key={`track2-${idx}`} className="flex items-center gap-5 sm:gap-8 mx-3 sm:mx-5 shrink-0">
+              <span className="flex items-center gap-2 text-xs sm:text-sm font-black tracking-widest uppercase text-white font-mono">
+                <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                <span>USE CODE</span>
+                <span className="bg-white text-black font-black px-2 py-0.5 text-xs sm:text-sm tracking-wider">
+                  KHEOO10
+                </span>
+                <span>FOR 10% OFF</span>
+              </span>
+              <span className="text-zinc-500 font-mono text-xs">✦</span>
+            </div>
+          ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes marquee {
+          0% {
+            transform: translateX(0%);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-marquee {
+          animation: marquee 45s linear infinite;
+        }
+      `}</style>
     </div>
   );
 };
