@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Search, ShoppingBag, Heart, Menu, X, User, ArrowRight } from 'lucide-react';
-import { AnnouncementBar } from './AnnouncementBar';
 import { useCartStore } from '../../store/useCartStore';
 import { useWishlistStore } from '../../store/useWishlistStore';
 import { useSearchStore } from '../../store/useSearchStore';
@@ -25,32 +24,30 @@ export const Header: React.FC = () => {
   const isCategoriesActive = pathname.startsWith('/categories');
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-zinc-200 text-black">
-      <AnnouncementBar />
-
-      <div className="w-[90%] mx-auto">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-zinc-200 text-black w-full max-w-full overflow-hidden">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[90%] lg:px-0 mx-auto">
         <div className="flex items-center justify-between h-16 sm:h-18 lg:h-[76px]">
           {/* Left: Logo & Primary 2 Navigation Tabs (Matching Image 1 reference) */}
-          <div className="flex items-center gap-8 xl:gap-12">
-            <Link href="/" className="flex items-center group">
+          <div className="flex items-center gap-4 sm:gap-8 xl:gap-12">
+            <Link href="/" className="flex items-center group shrink-0">
               <Image
                 src="/assets/logo/Kheoo-logo.png"
                 alt="KHEOO Logo"
                 width={64}
                 height={64}
-                className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 object-contain group-hover:opacity-80 transition-opacity"
+                className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 object-contain group-hover:opacity-80 transition-opacity"
                 priority
               />
             </Link>
 
-            {/* Desktop Navigation Links: Exactly PRODUCTS and CATEGORIES as in Image 1 */}
-            <nav className="hidden lg:flex items-center gap-3 text-xs xl:text-sm font-black tracking-wider uppercase text-black font-sans">
+            {/* Desktop Navigation Links: Exactly PRODUCTS and CATEGORIES */}
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-xs xl:text-sm font-black tracking-wider uppercase text-black font-sans">
               <Link
                 href="/products"
-                className={`px-4 py-1.5 transition-all uppercase tracking-wider ${
+                className={`py-1.5 transition-colors uppercase tracking-wider ${
                   isProductsActive
-                    ? 'border border-black font-black text-black bg-zinc-50'
-                    : 'text-zinc-600 hover:text-black border border-transparent hover:border-zinc-300'
+                    ? 'font-black text-black'
+                    : 'text-zinc-500 hover:text-black'
                 }`}
               >
                 PRODUCTS
@@ -58,10 +55,10 @@ export const Header: React.FC = () => {
 
               <Link
                 href="/categories"
-                className={`px-4 py-1.5 transition-all uppercase tracking-wider ${
+                className={`py-1.5 transition-colors uppercase tracking-wider ${
                   isCategoriesActive
-                    ? 'border border-black font-black text-black bg-zinc-50'
-                    : 'text-zinc-600 hover:text-black border border-transparent hover:border-zinc-300'
+                    ? 'font-black text-black'
+                    : 'text-zinc-500 hover:text-black'
                 }`}
               >
                 CATEGORIES
@@ -70,7 +67,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
             {/* Search Icon */}
             <button
               onClick={openSearch}
@@ -114,7 +111,7 @@ export const Header: React.FC = () => {
             {/* Mobile-Only Hamburger Toggle on the RIGHT */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-black hover:bg-zinc-100 transition-colors cursor-pointer"
+              className="lg:hidden h-10 w-10 flex items-center justify-center -mr-2 text-black hover:bg-zinc-100 transition-colors cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -125,7 +122,7 @@ export const Header: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-zinc-200 px-5 py-5 space-y-5 font-mono text-xs text-black animate-in fade-in slide-in-from-top duration-200">
+        <div className="lg:hidden bg-white border-b border-zinc-200 px-4 sm:px-5 py-5 space-y-4 sm:space-y-5 font-mono text-xs text-black animate-in fade-in slide-in-from-top duration-200 max-h-[85vh] overflow-y-auto">
           {/* Quick Action Cards: Cart & Wishlist */}
           <div className="grid grid-cols-2 gap-3 pb-3 border-b border-zinc-200">
             {/* Cart Button */}
@@ -214,22 +211,6 @@ export const Header: React.FC = () => {
               className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
             >
               <span>DC Comics Series</span>
-              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-            </Link>
-            <Link
-              href="/shop?category=polo"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
-            >
-              <span>China Micro Spandex Polo</span>
-              <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-            </Link>
-            <Link
-              href="/shop?category=islamic"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
-            >
-              <span>Islamic Calligraphy</span>
               <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
             </Link>
             <Link

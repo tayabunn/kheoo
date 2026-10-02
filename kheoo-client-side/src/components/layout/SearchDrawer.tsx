@@ -47,7 +47,7 @@ export const SearchDrawer: React.FC = () => {
         onClick={closeSearch}
       />
 
-      <div className="relative max-w-4xl mx-auto mt-12 bg-white border border-zinc-200 rounded-lg shadow-2xl text-black overflow-hidden p-6 z-10">
+      <div className="relative w-[94%] sm:w-full max-w-4xl mx-auto mt-4 sm:mt-12 bg-white border border-zinc-200 rounded-lg shadow-2xl text-black overflow-hidden p-4 sm:p-6 z-10">
         <div className="flex items-center gap-3 border-b border-zinc-200 pb-4">
           <Search className="w-6 h-6 text-black shrink-0" />
           <input

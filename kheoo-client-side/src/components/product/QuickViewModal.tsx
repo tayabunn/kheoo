@@ -30,15 +30,15 @@ export const QuickViewModal: React.FC = () => {
         onClick={closeQuickView}
       />
 
-      <div className="relative bg-white border border-zinc-200 rounded-3xl max-w-3xl w-full text-black shadow-2xl overflow-hidden z-10 grid grid-cols-1 md:grid-cols-2">
+      <div className="relative bg-white border border-zinc-200 rounded-2xl md:rounded-3xl max-w-3xl w-full text-black shadow-2xl overflow-hidden z-10 grid grid-cols-1 md:grid-cols-2 max-h-[90vh] overflow-y-auto">
         <button
           onClick={closeQuickView}
-          className="absolute top-4 right-4 z-20 p-2 bg-white hover:bg-zinc-100 text-black rounded-full transition-colors border border-zinc-200 shadow-md"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2 bg-white hover:bg-zinc-100 text-black rounded-full transition-colors border border-zinc-200 shadow-md"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
-        <div className="relative bg-zinc-100 aspect-[3/4] md:aspect-auto">
+        <div className="relative bg-zinc-100 aspect-[3/4] md:aspect-auto min-h-[220px]">
           <Image
             src={selectedProduct.images[activeImageIndex] || selectedProduct.images[0]}
             alt={selectedProduct.name}
@@ -62,7 +62,7 @@ export const QuickViewModal: React.FC = () => {
           )}
         </div>
 
-        <div className="p-6 md:p-8 flex flex-col justify-between space-y-6">
+        <div className="p-4 sm:p-6 md:p-8 flex flex-col justify-between space-y-4 sm:space-y-6">
           <div>
             <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono mb-2">
               <span className="uppercase font-bold text-black">{selectedProduct.category?.name || 'Streetwear'}</span>
