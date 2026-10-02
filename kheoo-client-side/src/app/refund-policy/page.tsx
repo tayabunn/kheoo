@@ -9,14 +9,14 @@ export const metadata = {
 
 export default function RefundPolicyPage() {
   return (
-    <div className="py-16 md:py-24 bg-white text-black min-h-screen">
-      <div className="w-[90%] mx-auto space-y-12">
+    <div className="py-8 sm:py-16 md:py-24 bg-white text-black min-h-screen">
+      <div className="w-[90%] mx-auto space-y-8 sm:space-y-12">
         {/* Header */}
-        <div className="border-b border-zinc-200 pb-8">
-          <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-2">
+        <div className="border-b border-zinc-200 pb-4 sm:pb-8">
+          <span className="text-[11px] sm:text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-1 sm:mb-2">
             HASSLE-FREE ASSURANCE
           </span>
-          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
             Return & Refund Policy
           </h1>
           <p className="text-xs font-mono text-zinc-500 mt-2">

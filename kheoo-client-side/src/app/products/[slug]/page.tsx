@@ -85,10 +85,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
   };
 
   return (
-    <div className="py-12 bg-white text-black min-h-screen">
+    <div className="py-6 sm:py-12 bg-white text-black min-h-screen">
       <div className="w-[90%] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
-          <div className="lg:col-span-7 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-12 mb-10 sm:mb-20">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
             <div className="relative aspect-[3/4] w-full bg-zinc-100 rounded-lg overflow-hidden border border-zinc-200 shadow-xl">
               <Image
                 src={product.images[activeImageIdx] || product.images[0]}
@@ -99,12 +99,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             </div>
 
             {product.images.length > 1 && (
-              <div className="flex gap-4">
+              <div className="flex gap-2 sm:gap-4 overflow-x-auto pb-1">
                 {product.images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveImageIdx(i)}
-                    className={`relative w-24 h-28 rounded-xl overflow-hidden border-2 transition-all ${
+                    className={`relative w-16 h-20 sm:w-24 sm:h-28 shrink-0 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all ${
                       activeImageIdx === i ? 'border-black' : 'border-zinc-200 opacity-60'
                     }`}
                   >
@@ -115,7 +115,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             )}
           </div>
 
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-4 sm:space-y-6">
             <div>
               <div className="flex items-center gap-3 text-xs font-mono mb-2">
                 <span className="bg-black text-white px-2.5 py-0.5 font-black uppercase rounded">
@@ -129,14 +129,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 </div>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black leading-snug">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black uppercase tracking-tight text-black leading-snug">
                 {product.name}
               </h1>
 
               <div className="flex items-baseline gap-3 mt-3 font-mono">
-                <span className="text-3xl font-black text-black">${product.price.toFixed(2)}</span>
+                <span className="text-2xl sm:text-3xl font-black text-black">${product.price.toFixed(2)}</span>
                 {product.oldPrice && (
-                  <span className="text-base text-zinc-400 line-through">${product.oldPrice.toFixed(2)}</span>
+                  <span className="text-sm sm:text-base text-zinc-400 line-through">${product.oldPrice.toFixed(2)}</span>
                 )}
                 <span className="text-xs text-black font-bold bg-zinc-100 px-2 py-0.5 rounded border border-zinc-200">
                   In Stock ({product.stock} units)
@@ -144,7 +144,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
               </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-sans border-t border-b border-zinc-200 py-4">
+            <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-sans border-t border-b border-zinc-200 py-3 sm:py-4">
               {product.description}
             </p>
 
@@ -159,12 +159,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 </button>
               </div>
 
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
                 {['S', 'M', 'L', 'XL', 'XXL'].map((sz) => (
                   <button
                     key={sz}
                     onClick={() => setSelectedSize(sz)}
-                    className={`py-3 rounded-lg text-xs font-bold transition-all border ${
+                    className={`py-2.5 sm:py-3 rounded-lg text-xs font-bold transition-all border ${
                       selectedSize === sz
                         ? 'bg-black text-white border-black font-black shadow-lg'
                         : 'bg-zinc-50 border-zinc-200 text-zinc-700 hover:border-zinc-400'
@@ -176,9 +176,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
               </div>
 
               {showSizeGuide && (
-                <div className="p-4 bg-zinc-50 border border-zinc-200 rounded-lg text-xs space-y-2 font-mono">
+                <div className="p-3 sm:p-4 bg-zinc-50 border border-zinc-200 rounded-lg text-xs space-y-2 font-mono overflow-x-auto">
                   <h4 className="font-bold text-black uppercase">Streetwear Size Specs (Inches)</h4>
-                  <table className="w-full text-left text-zinc-700">
+                  <table className="w-full text-left text-zinc-700 min-w-[280px]">
                     <thead>
                       <tr className="border-b border-zinc-200 text-zinc-500">
                         <th>Size</th>
