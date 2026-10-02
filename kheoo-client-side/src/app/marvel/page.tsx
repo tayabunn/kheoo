@@ -32,11 +32,11 @@ export default function MarvelPage() {
     <div className="py-8 sm:py-12 md:py-16 bg-white text-black min-h-screen">
       <div className="w-[90%] mx-auto">
         {/* Header */}
-        <div className="mb-6 sm:mb-8 border-b border-zinc-200 pb-6">
-          <span className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest block mb-1">
+        <div className="mb-6 sm:mb-8 border-b border-zinc-200 pb-4 sm:pb-6">
+          <span className="text-[11px] sm:text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest block mb-1">
             COLLECTION / MARVEL
           </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-black">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-black">
             MARVEL DROP SHOULDER COLLECTION
           </h1>
           <p className="text-xs sm:text-sm text-zinc-500 mt-2 font-mono">
@@ -45,9 +45,9 @@ export default function MarvelPage() {
         </div>
 
         {/* Subfranchise Filter Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 bg-zinc-50 p-4 rounded-xl border border-zinc-200 font-mono">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider flex items-center gap-1.5 mr-1">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 bg-zinc-50 p-3 sm:p-4 rounded-xl border border-zinc-200 font-mono">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap">
+            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider flex items-center gap-1.5 mr-1 shrink-0">
               <Filter className="w-3.5 h-3.5 text-black" /> Hero / Drop:
             </span>
             {[

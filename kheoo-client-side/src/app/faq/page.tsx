@@ -113,8 +113,8 @@ export default function FAQPage() {
             <p className="text-zinc-600 font-sans">
               Send your order inquiries or bulk drop collaboration requests.
             </p>
-            <a href="mailto:hello@kheoo.com" className="font-bold text-black underline block pt-1">
-              hello@kheoo.com
+            <a href="mailto:kheoobd@gmail.com" className="font-bold text-black underline block pt-1" title="Send direct email to kheoobd@gmail.com">
+              kheoobd@gmail.com
             </a>
           </div>
         </div>

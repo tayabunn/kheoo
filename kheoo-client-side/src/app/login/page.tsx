@@ -207,10 +207,10 @@ function AuthContent() {
       <div className="w-[90%] max-w-[560px] mx-auto">
         {/* Top Header */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black mt-1">
+          <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-black mt-1">
             {mode === 'login' ? 'WELCOME BACK' : 'CREATE AN ACCOUNT'}
           </h1>
-          <p className="text-base text-zinc-500  mt-1">
+          <p className="text-xs sm:text-sm text-zinc-500 mt-1">
             {mode === 'login'
               ? 'Sign in to track orders, access wishlist & member drops'
               : 'Join the KHEOO club for 10% off your first streetwear drop'}
