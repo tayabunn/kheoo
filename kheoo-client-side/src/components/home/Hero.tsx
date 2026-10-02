@@ -97,9 +97,9 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative bg-black text-white overflow-hidden select-none border-b border-zinc-800">
-      <div className="relative w-full h-[350px] sm:h-[480px] md:h-[580px] lg:h-[650px] flex items-center overflow-hidden touch-pan-y">
-        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+    <section className="relative w-full max-w-full bg-black text-white overflow-hidden overflow-x-clip select-none border-b border-zinc-800">
+      <div className="relative w-full max-w-full h-[350px] sm:h-[480px] md:h-[580px] lg:h-[650px] flex items-center overflow-hidden overflow-x-clip touch-pan-y">
+        <AnimatePresence initial={false} custom={direction} mode="sync">
           <motion.div
             key={page}
             custom={direction}
@@ -143,24 +143,24 @@ export const Hero: React.FC = () => {
         <button
           type="button"
           onClick={handlePrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-none bg-black/70 hover:bg-black border border-white/30 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-2xl cursor-pointer pointer-events-auto"
+          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-12 sm:h-12 rounded-none bg-black/70 hover:bg-black border border-white/30 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-2xl cursor-pointer pointer-events-auto"
           aria-label="Previous Slide"
         >
-          <ChevronLeft className="w-6 h-6 text-white" />
+          <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
         </button>
 
         {/* Next Arrow Button */}
         <button
           type="button"
           onClick={handleNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-none bg-black/70 hover:bg-black border border-white/30 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-2xl cursor-pointer pointer-events-auto"
+          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-12 sm:h-12 rounded-none bg-black/70 hover:bg-black border border-white/30 text-white flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-2xl cursor-pointer pointer-events-auto"
           aria-label="Next Slide"
         >
-          <ChevronRight className="w-6 h-6 text-white" />
+          <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
         </button>
 
         {/* Slide Indicator Dots */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3 bg-black/70 backdrop-blur-md border border-white/20 px-4 py-2 rounded-none pointer-events-auto">
+        <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 sm:gap-3 bg-black/70 backdrop-blur-md border border-white/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-none pointer-events-auto">
           {SLIDES.map((s, idx) => (
             <button
               key={s.id}
@@ -168,8 +168,8 @@ export const Hero: React.FC = () => {
               onClick={() => handleDotClick(idx)}
               className={`transition-all duration-300 cursor-pointer ${
                 currentSlide === idx
-                  ? 'w-8 h-2.5 bg-red-600 rounded-none shadow-md shadow-red-600/50'
-                  : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/80 rounded-none'
+                  ? 'w-6 sm:w-8 h-2 sm:h-2.5 bg-red-600 rounded-none shadow-md shadow-red-600/50'
+                  : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/40 hover:bg-white/80 rounded-none'
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

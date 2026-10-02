@@ -10,14 +10,14 @@ export default function WishlistPage() {
   const items = useWishlistStore((state) => state.items);
 
   return (
-    <div className="py-12 bg-white text-black min-h-screen font-mono">
+    <div className="py-6 sm:py-12 bg-white text-black min-h-screen font-mono">
       <div className="w-[90%] mx-auto">
-        <div className="mb-8 border-b border-zinc-200 pb-6 flex items-center justify-between">
+        <div className="mb-6 sm:mb-8 border-b border-zinc-200 pb-4 sm:pb-6 flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
+            <span className="text-[11px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest">
               SAVED DROPS
             </span>
-            <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mt-1">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-black mt-1">
               YOUR WISHLIST
             </h1>
           </div>

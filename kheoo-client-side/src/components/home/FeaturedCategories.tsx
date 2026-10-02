@@ -35,53 +35,55 @@ export const FeaturedCategories: React.FC = () => {
   ];
 
   return (
-    <section className="py-8 sm:py-12 md:py-16 bg-white text-black">
-      <div className="w-[90%] mx-auto">
+    <section className="py-6 sm:py-10 md:py-16 bg-white text-black w-full overflow-hidden">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[90%] lg:px-0 mx-auto">
         {/* Centered Heading */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-black tracking-tight text-center text-black font-sans mb-6 sm:mb-8 md:mb-10">
+        <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-[40px] font-black tracking-tight text-center text-black font-sans mb-4 sm:mb-8 md:mb-10 uppercase">
           Shop by category
         </h2>
 
         {/* Categories Layout: Left Large Card (1 col) + Right 2x2 Grid (1 col) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-4 md:gap-5">
           {/* Left: Large Featured Category */}
           <Link
             href={featuredLarge.link}
-            className="group relative rounded-none overflow-hidden bg-zinc-100 aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-full min-h-[320px] sm:min-h-[420px] flex flex-col justify-end"
+            className="group relative rounded-none overflow-hidden bg-zinc-100 aspect-[16/10] sm:aspect-[16/10] lg:aspect-auto lg:h-full min-h-[200px] sm:min-h-[360px] flex flex-col justify-end w-full"
           >
             <Image
               src={featuredLarge.image}
               alt={featuredLarge.name}
               fill
               priority
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
               className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
             />
             {/* Bottom Gradient Overlay + Text */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-5 sm:p-7 md:p-8 flex flex-col justify-end">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white text-left leading-tight drop-shadow-sm">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-4 sm:p-6 md:p-8 flex flex-col justify-end">
+              <h3 className="text-base sm:text-2xl md:text-3xl font-black text-white text-left leading-tight drop-shadow-sm">
                 {featuredLarge.name}
               </h3>
             </div>
           </Link>
 
           {/* Right: 2x2 Grid */}
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-5">
             {gridCategories.map((cat, idx) => (
               <Link
                 key={idx}
                 href={cat.link}
-                className="group relative rounded-none overflow-hidden bg-zinc-100 aspect-square flex flex-col justify-end"
+                className="group relative rounded-none overflow-hidden bg-zinc-100 aspect-square flex flex-col justify-end w-full"
               >
                 <Image
                   src={cat.image}
                   alt={cat.name}
                   fill
                   priority={idx < 2}
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 {/* Bottom Gradient Overlay + Text */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent p-3.5 sm:p-5 md:p-6 flex flex-col justify-end">
-                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white text-left leading-snug drop-shadow-sm">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-2.5 sm:p-4 md:p-6 flex flex-col justify-end">
+                  <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-white text-left leading-tight drop-shadow-sm line-clamp-2">
                     {cat.name}
                   </h3>
                 </div>
@@ -91,12 +93,13 @@ export const FeaturedCategories: React.FC = () => {
         </div>
 
         {/* Centered Button: VIEW ALL CATEGORIES */}
-        <div className="flex justify-center mt-8 sm:mt-10 md:mt-12">
+        <div className="mt-6 sm:mt-10 md:mt-12 text-center">
           <Link
             href="/categories"
-            className="bg-[#181818] hover:bg-black text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-8 py-3.5 sm:px-10 sm:py-4 transition-all duration-300 active:scale-95 text-center shadow-none inline-block"
+            className="inline-flex items-center justify-center gap-2 bg-[#1c1c1e] hover:bg-black text-white text-[11px] sm:text-xs md:text-sm font-bold tracking-wider uppercase px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-xl transition-all shadow-sm active:scale-95 border border-black"
           >
-            VIEW ALL CATEGORIES
+            <span>VIEW ALL CATEGORIES</span>
+            <span className="text-xs">›</span>
           </Link>
         </div>
       </div>
