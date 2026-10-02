@@ -82,22 +82,23 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {/* 1. Email Card */}
           <div className="bg-[#f4f4f6] rounded-2xl md:rounded-[22px] p-6 sm:p-7 flex flex-col items-center justify-center text-center border border-zinc-200/60 hover:border-zinc-300 transition-all relative group">
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3.5 text-zinc-900 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3.5 text-zinc-900 group-hover:scale-110 transition-transform shadow-sm">
               <Mail className="w-5 h-5 stroke-[1.75]" />
             </div>
             <a
-              href="mailto:hello@kheoo.com"
+              href="mailto:kheoobd@gmail.com"
               className="text-base sm:text-lg font-bold text-zinc-900 hover:text-black transition-colors"
+              title="Send direct email"
             >
-              hello@kheoo.com
+              kheoobd@gmail.com
             </a>
             <div className="flex items-center gap-1.5 mt-1.5">
-              <span className="text-xs sm:text-sm text-zinc-500 font-medium">Email Address</span>
+              <span className="text-xs sm:text-sm text-zinc-500 font-medium">Official Mail</span>
               <button
                 type="button"
-                onClick={() => handleCopy('hello@kheoo.com', 'email')}
+                onClick={() => handleCopy('kheoobd@gmail.com', 'email')}
                 className="text-zinc-400 hover:text-black transition-colors p-0.5"
-                title="Copy email"
+                title="Copy email address"
               >
                 {copiedType === 'email' ? (
                   <Check className="w-4 h-4 text-emerald-600" />
@@ -110,7 +111,7 @@ export default function ContactPage() {
 
           {/* 2. Phone / WhatsApp Card */}
           <div className="bg-[#f4f4f6] rounded-2xl md:rounded-[22px] p-6 sm:p-7 flex flex-col items-center justify-center text-center border border-zinc-200/60 hover:border-zinc-300 transition-all relative group">
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3.5 text-zinc-900 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3.5 text-zinc-900 group-hover:scale-110 transition-transform shadow-sm">
               <Phone className="w-5 h-5 stroke-[1.75]" />
             </div>
             <a
@@ -120,7 +121,7 @@ export default function ContactPage() {
               +880 1234 567 891
             </a>
             <div className="flex items-center gap-1.5 mt-1.5">
-              <span className="text-xs sm:text-sm text-zinc-500 font-medium">Phone Number</span>
+              <span className="text-xs sm:text-sm text-zinc-500 font-medium">Phone / WhatsApp</span>
               <button
                 type="button"
                 onClick={() => handleCopy('+8801234567891', 'phone')}
@@ -138,13 +139,13 @@ export default function ContactPage() {
 
           {/* 3. Location Card */}
           <div className="bg-[#f4f4f6] rounded-2xl md:rounded-[22px] p-6 sm:p-7 flex flex-col items-center justify-center text-center border border-zinc-200/60 hover:border-zinc-300 transition-all relative group">
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3.5 text-zinc-900 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-3.5 text-zinc-900 group-hover:scale-110 transition-transform shadow-sm">
               <MapPin className="w-5 h-5 stroke-[1.75]" />
             </div>
             <span className="text-base sm:text-lg font-bold text-zinc-900">
               Banani, Dhaka-1213
             </span>
-            <span className="text-xs sm:text-sm text-zinc-500 mt-1.5 font-medium">Location</span>
+            <span className="text-xs sm:text-sm text-zinc-500 mt-1.5 font-medium">Studio Location</span>
           </div>
         </div>
 
@@ -152,13 +153,13 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch">
           {/* Left: Streetwear Editorial Model Showcase (5 cols - Bento Div) */}
           <div className="lg:col-span-5 flex flex-col h-full">
-            <div className="w-full h-full relative min-h-[460px] sm:min-h-[520px] rounded-2xl md:rounded-[24px] overflow-hidden bg-zinc-900 border border-zinc-200/60 group flex flex-col justify-between">
+            <div className="w-full h-full relative min-h-[480px] sm:min-h-[540px] rounded-2xl md:rounded-[24px] overflow-hidden bg-zinc-900 border border-zinc-200/60 group flex flex-col justify-between">
               <img
                 src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&auto=format&fit=crop&q=80"
                 alt="KHEOO Streetwear Editorial"
                 className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/30 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/30 pointer-events-none" />
 
               {/* Floating Studio Badge */}
               <div className="relative z-10 p-5 sm:p-6">
@@ -168,22 +169,59 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Bottom Content & Instant WhatsApp Action */}
-              <div className="relative z-10 p-5 sm:p-6 md:p-8 text-white space-y-3">
+              {/* Bottom Content & Social Actions */}
+              <div className="relative z-10 p-5 sm:p-6 md:p-8 text-white space-y-3.5">
                 <div className="space-y-1">
                   <p className="text-xs font-mono uppercase tracking-widest text-zinc-300">
                     240+ GSM HEAVYWEIGHT DROPS
                   </p>
                   <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-snug">
-                    Wear Your Culture.
+                    Connect With Kheoo
                   </h3>
                 </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href="https://www.instagram.com/kheoobd/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-bold text-xs uppercase py-3 px-3 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95"
+                    title="Instagram @kheoobd"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                    </svg>
+                    <span>Instagram</span>
+                  </a>
+
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61594589775479"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-bold text-xs uppercase py-3 px-3 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95"
+                    title="Facebook Page"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                    <span>Facebook</span>
+                  </a>
+                </div>
+
+                <a
+                  href="mailto:kheoobd@gmail.com"
+                  className="w-full bg-white hover:bg-zinc-200 text-black font-extrabold text-xs sm:text-sm uppercase py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-98"
+                >
+                  <Mail className="w-4 h-4" /> Send Direct Email
+                </a>
 
                 <a
                   href="https://wa.me/8801234567891"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm uppercase py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-98"
+                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm uppercase py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-98"
                 >
                   <MessageSquare className="w-4 h-4" /> Chat on WhatsApp Directly
                 </a>
