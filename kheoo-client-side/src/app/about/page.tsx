@@ -10,48 +10,48 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="py-16 md:py-24 bg-white text-black min-h-screen font-sans">
-      <div className="w-[90%] mx-auto space-y-16">
+    <div className="py-8 sm:py-16 md:py-24 bg-white text-black min-h-screen font-sans">
+      <div className="w-[90%] mx-auto space-y-10 sm:space-y-16">
         {/* Header Hero */}
-        <div className="border-b border-zinc-200 pb-10">
+        <div className="border-b border-zinc-200 pb-6 sm:pb-10">
           <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-2">
             THE KHEOO ARCHIVE
           </span>
-          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-black leading-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight text-black leading-tight">
             CRAFTED FOR THOSE WHO WEAR THEIR CULTURE.
           </h1>
-          <p className="text-sm md:text-base text-zinc-600 font-sans mt-4 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm md:text-base text-zinc-600 font-sans mt-3 sm:mt-4 max-w-2xl leading-relaxed">
             Born in Dhaka, Bangladesh, KHEOO exists to redefine casual streetwear through heavyweight fabric engineering, boxy drape aesthetics, and authentic anime & pop-culture graphic lore.
           </p>
         </div>
 
         {/* Brand Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-8 border border-zinc-200 bg-zinc-50 space-y-4">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center font-mono font-black">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <div className="p-5 sm:p-8 border border-zinc-200 bg-zinc-50 space-y-3 sm:space-y-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black text-white flex items-center justify-center font-mono font-black text-sm sm:text-base">
               240+
             </div>
-            <h3 className="text-base font-black uppercase text-black font-mono">GSM Heavy Cotton</h3>
+            <h3 className="text-sm sm:text-base font-black uppercase text-black font-mono">GSM Heavy Cotton</h3>
             <p className="text-xs text-zinc-600 leading-relaxed font-sans">
               100% combed ringspun cotton fabric specifically engineered to provide clean structured drape that never loses its boxy shape.
             </p>
           </div>
 
-          <div className="p-8 border border-zinc-200 bg-zinc-50 space-y-4">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center">
-              <Layers className="w-6 h-6" />
+          <div className="p-5 sm:p-8 border border-zinc-200 bg-zinc-50 space-y-3 sm:space-y-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black text-white flex items-center justify-center">
+              <Layers className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="text-base font-black uppercase text-black font-mono">Puff & HD Screen Print</h3>
+            <h3 className="text-sm sm:text-base font-black uppercase text-black font-mono">Puff & HD Screen Print</h3>
             <p className="text-xs text-zinc-600 leading-relaxed font-sans">
               Custom-cured plastisol, metallic foil, and 3D puff inks engineered to withstand 50+ wash cycles without cracking or fading.
             </p>
           </div>
 
-          <div className="p-8 border border-zinc-200 bg-zinc-50 space-y-4">
-            <div className="w-12 h-12 bg-black text-white flex items-center justify-center">
-              <Zap className="w-6 h-6" />
+          <div className="p-5 sm:p-8 border border-zinc-200 bg-zinc-50 space-y-3 sm:space-y-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-black text-white flex items-center justify-center">
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="text-base font-black uppercase text-black font-mono">Limited Edition Drops</h3>
+            <h3 className="text-sm sm:text-base font-black uppercase text-black font-mono">Limited Edition Drops</h3>
             <p className="text-xs text-zinc-600 leading-relaxed font-sans">
               We release curated, limited-quantity drops across Anime, Marvel, DC, and Cyberpunk themes to keep every design exclusive.
             </p>
