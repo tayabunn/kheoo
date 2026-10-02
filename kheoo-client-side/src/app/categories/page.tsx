@@ -106,13 +106,13 @@ export default function CategoriesPage() {
           </ol>
         </nav>
 
-        {/* Category Cards Grid (Matching Image 1: 4 columns x 2 rows) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+        {/* Category Cards Grid (2 columns on mobile, 4 columns on desktop) */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5 md:gap-6">
           {CATEGORIES.map((cat, idx) => (
             <Link
               key={cat.id}
               href={cat.link}
-              className="group relative block overflow-hidden bg-zinc-100 aspect-[4/5] transition-all duration-300 shadow-sm hover:shadow-xl"
+              className="group relative block overflow-hidden bg-zinc-100 aspect-[4/5] transition-all duration-300 shadow-sm hover:shadow-xl rounded-none"
             >
               {/* Background Image */}
               <Image
@@ -120,31 +120,31 @@ export default function CategoriesPage() {
                 alt={cat.name}
                 fill
                 priority={idx < 4}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
               />
 
-              {/* Top Right Corner Badge (Optional pill) */}
+              {/* Top Right Corner Badge */}
               {cat.itemCount && (
-                <div className="absolute top-3 right-3 z-10">
-                  <span className="bg-black/80 backdrop-blur-sm text-white text-[10px] font-mono font-bold px-2.5 py-1 uppercase tracking-wider">
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
+                  <span className="bg-black/80 backdrop-blur-sm text-white text-[9px] sm:text-[10px] font-mono font-bold px-1.5 py-0.5 sm:px-2.5 sm:py-1 uppercase tracking-wider">
                     {cat.itemCount}
                   </span>
                 </div>
               )}
 
-              {/* Bottom Gradient Overlay (Exact match to Image 1 aesthetic) */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-5 sm:p-6 flex flex-col justify-end">
-                <div className="flex items-end justify-between gap-2">
-                  <h2 className="text-lg sm:text-xl md:text-2xl font-black text-white leading-tight font-sans drop-shadow-sm group-hover:text-amber-300 transition-colors">
+              {/* Bottom Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent p-3 sm:p-5 md:p-6 flex flex-col justify-end">
+                <div className="flex items-end justify-between gap-1 sm:gap-2">
+                  <h2 className="text-xs sm:text-base md:text-xl lg:text-2xl font-black text-white leading-tight font-sans drop-shadow-sm group-hover:text-amber-300 transition-colors line-clamp-2">
                     {cat.name}
                   </h2>
-                  <div className="w-7 h-7 shrink-0 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 -translate-x-1 transition-all">
-                    <ArrowUpRight className="w-4 h-4" />
+                  <div className="w-5 h-5 sm:w-7 sm:h-7 shrink-0 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 -translate-x-1 transition-all">
+                    <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                 </div>
                 {cat.subtitle && (
-                  <p className="text-[11px] sm:text-xs text-zinc-300 font-mono mt-1 opacity-90 line-clamp-1">
+                  <p className="text-[9px] sm:text-xs text-zinc-300 font-mono mt-0.5 sm:mt-1 opacity-90 line-clamp-1">
                     {cat.subtitle}
                   </p>
                 )}

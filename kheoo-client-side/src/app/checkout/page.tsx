@@ -94,13 +94,13 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="py-12 bg-white text-black min-h-screen">
+    <div className="py-6 sm:py-12 bg-white text-black min-h-screen">
       <div className="w-[90%] mx-auto">
-        <div className="mb-8 border-b border-zinc-200 pb-4">
+        <div className="mb-6 sm:mb-8 border-b border-zinc-200 pb-4">
           <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest">
             SECURE CHECKOUT
           </span>
-          <h1 className="text-3xl font-black uppercase tracking-tight text-black mt-1">
+          <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black mt-1">
             SHIPPING & PAYMENT
           </h1>
         </div>
@@ -111,9 +111,9 @@ export default function CheckoutPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmitOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-12 font-mono">
-          <div className="lg:col-span-7 space-y-8">
-            <div className="bg-white p-6 md:p-8 rounded-lg border border-zinc-200 shadow-sm space-y-4">
+        <form onSubmit={handleSubmitOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-12 font-mono">
+          <div className="lg:col-span-7 space-y-6 sm:space-y-8">
+            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg border border-zinc-200 shadow-sm space-y-4">
               <h3 className="text-sm font-bold text-black uppercase tracking-wider flex items-center gap-2">
                 <Truck className="w-5 h-5 text-black" /> 1. Shipping Address
               </h3>
