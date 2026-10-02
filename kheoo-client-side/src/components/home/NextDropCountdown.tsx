@@ -68,7 +68,7 @@ export const NextDropCountdown: React.FC<NextDropCountdownProps> = ({
   return (
     <section className="py-12 sm:py-16 md:py-24 bg-black text-white relative overflow-hidden border-y border-zinc-800">
       {/* Subtle Ambient Monochrome Lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-white/5 blur-[140px] pointer-events-none rounded-full" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[400px] bg-white/5 blur-[140px] pointer-events-none rounded-full" />
 
       <div className="w-[90%] mx-auto relative z-10 flex flex-col items-center text-center">
         {/* Drop Badge - Monochrome */}

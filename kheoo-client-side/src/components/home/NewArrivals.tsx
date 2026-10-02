@@ -12,7 +12,7 @@ interface NewArrivalsProps {
 export const NewArrivals: React.FC<NewArrivalsProps> = ({ products }) => {
   return (
     <section className="py-8 sm:py-12 md:py-16 bg-white text-black">
-      <div className="w-[90%] mx-auto">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[90%] lg:px-0 mx-auto">
         {/* Header Row: Title on Left, View all pill button on Right */}
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-black font-sans">

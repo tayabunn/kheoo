@@ -16,7 +16,7 @@ export const Newsletter: React.FC = () => {
 
   return (
     <section className="py-20 bg-white text-black border-b border-zinc-200">
-      <div className="w-[90%] mx-auto text-center">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[90%] lg:px-0 mx-auto text-center">
         <div className="w-14 h-14 rounded-none bg-black text-white flex items-center justify-center mx-auto mb-6 shadow-md">
           <Mail className="w-7 h-7" />
         </div>
