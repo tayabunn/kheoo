@@ -57,13 +57,13 @@ export default function TrackOrderPage() {
   };
 
   return (
-    <div className="py-16 bg-white text-black min-h-screen font-mono">
+    <div className="py-8 sm:py-16 bg-white text-black min-h-screen font-mono">
       <div className="w-[90%] mx-auto">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8 sm:mb-10">
           <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
             REAL-TIME TRACKING
           </span>
-          <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mt-1">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-black mt-1">
             TRACK YOUR SHIPMENT
           </h1>
           <p className="text-xs text-zinc-600 mt-2 font-sans">
@@ -71,7 +71,7 @@ export default function TrackOrderPage() {
           </p>
         </div>
 
-        <form onSubmit={handleTrack} className="flex gap-3 max-w-lg mx-auto mb-12">
+        <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 max-w-lg mx-auto mb-8 sm:mb-12">
           <input
             type="text"
             required
@@ -83,7 +83,7 @@ export default function TrackOrderPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase px-6 py-3.5 rounded-lg flex items-center gap-2 transition-all shadow-md"
+            className="w-full sm:w-auto justify-center bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase px-6 py-3.5 rounded-lg flex items-center gap-2 transition-all shadow-md"
           >
             <Search className="w-4 h-4" /> Track
           </button>

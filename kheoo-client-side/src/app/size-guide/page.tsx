@@ -71,19 +71,19 @@ export default function SizeGuidePage() {
   ];
 
   return (
-    <div className="py-16 md:py-24 bg-white text-black min-h-screen font-sans">
-      <div className="w-[90%] mx-auto space-y-12">
+    <div className="py-8 sm:py-16 md:py-24 bg-white text-black min-h-screen font-sans">
+      <div className="w-[90%] mx-auto space-y-8 sm:space-y-12">
         {/* Header */}
-        <div className="border-b border-zinc-200 pb-8">
+        <div className="border-b border-zinc-200 pb-4 sm:pb-8">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-2">
+              <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-1 sm:mb-2">
                 FIT & MEASUREMENT MATRIX
               </span>
-              <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
                 Streetwear Size Guide
               </h1>
-              <p className="text-xs font-mono text-zinc-500 mt-2">
+              <p className="text-xs font-mono text-zinc-500 mt-1 sm:mt-2">
                 Engineered with 240+ GSM heavyweight drop shoulders & relaxed boxy cuts.
               </p>
             </div>

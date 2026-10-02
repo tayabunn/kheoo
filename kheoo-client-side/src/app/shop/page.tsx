@@ -157,7 +157,7 @@ function ShopContent() {
         </div>
 
         {/* Quick Franchise Tag Badges */}
-        <div className="mb-4 sm:mb-5 flex flex-wrap items-center gap-2 sm:gap-2.5">
+        <div className="mb-4 sm:mb-5 flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1.5 sm:pb-0 sm:flex-wrap">
           <span className="text-xs font-mono font-black text-zinc-900 uppercase tracking-wider mr-1 hidden sm:inline">
             POPULAR:
           </span>
@@ -175,7 +175,7 @@ function ShopContent() {
             <button
               key={idx}
               onClick={() => handleSubcategoryClick(tag.kw, tag.cat)}
-              className={`text-xs sm:text-[13px] font-mono font-bold px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition-all cursor-pointer ${
+              className={`text-xs sm:text-[13px] font-mono font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition-all cursor-pointer shrink-0 sm:shrink ${
                 searchTerm.toLowerCase() === tag.kw.toLowerCase()
                   ? 'bg-black text-white border-black font-extrabold'
                   : 'bg-white text-zinc-800 border-zinc-300 hover:border-black hover:text-black hover:bg-zinc-50'
@@ -187,10 +187,10 @@ function ShopContent() {
         </div>
 
         {/* Filter Controls Bar */}
-        <div className="bg-zinc-50 p-3 sm:p-4 rounded-xl border border-zinc-200 mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 font-mono">
+        <div className="bg-zinc-50 p-3 sm:p-4 rounded-xl border border-zinc-200 mb-6 sm:mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 font-mono">
           {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider flex items-center gap-1.5 mr-1">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 sm:pb-0 sm:flex-wrap">
+            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider flex items-center gap-1.5 mr-1 shrink-0">
               <Filter className="w-3.5 h-3.5 text-black" /> Filter:
             </span>
             {[
@@ -205,7 +205,7 @@ function ShopContent() {
               <button
                 key={cat.id}
                 onClick={() => handleCategoryChange(cat.id)}
-                className={`text-xs font-bold px-3 sm:px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                className={`text-xs font-bold px-3 sm:px-3.5 py-1.5 rounded-lg transition-all cursor-pointer shrink-0 sm:shrink ${
                   categoryFilter === cat.id && !searchTerm
                     ? 'bg-black text-white'
                     : 'bg-white border border-zinc-200 text-zinc-700 hover:text-black hover:border-zinc-400'
