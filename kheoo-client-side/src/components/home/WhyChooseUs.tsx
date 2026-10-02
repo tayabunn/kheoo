@@ -29,7 +29,7 @@ export const WhyChooseUs: React.FC = () => {
 
   return (
     <section className="py-8 sm:py-14 md:py-20 bg-white text-black border-b border-zinc-200">
-      <div className="w-[90%] mx-auto">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[90%] lg:px-0 mx-auto">
         <div className="text-center mb-6 sm:mb-10 md:mb-12 font-mono">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-tight text-black">
             WHY WE ARE DIFFERENT

@@ -20,7 +20,7 @@ export const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ chi
   return (
     <>
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">{children}</main>
       <Footer />
       <CartDrawer />
       <SearchDrawer />
