@@ -9,17 +9,46 @@ import {
 
 export const runtime = 'nodejs';
 
+// In-memory rate limiting map for Edge / Node serverless instances
+const ipRateLimit = new Map<string, { count: number; reset: number }>();
+
+function checkRateLimit(ip: string, limit: number = 30, windowMs: number = 60 * 1000): boolean {
+  const now = Date.now();
+  const record = ipRateLimit.get(ip);
+  if (!record || record.reset < now) {
+    ipRateLimit.set(ip, { count: 1, reset: now + windowMs });
+    return true;
+  }
+  if (record.count >= limit) {
+    return false;
+  }
+  record.count += 1;
+  return true;
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
+    if (!checkRateLimit(ip, 30, 60 * 1000)) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait a moment before sending another message.' },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { messages, message, stream = true } = body;
 
     let chatMessages: ChatMessage[] = [];
 
     if (Array.isArray(messages) && messages.length > 0) {
-      chatMessages = messages;
+      // Limit conversation history to latest 20 messages and 1000 chars per message
+      chatMessages = messages.slice(-20).map((m: any) => ({
+        role: m.role === 'assistant' ? 'assistant' : 'user',
+        content: String(m.content || '').slice(0, 1500),
+      }));
     } else if (typeof message === 'string' && message.trim().length > 0) {
-      chatMessages = [{ role: 'user', content: message.trim() }];
+      chatMessages = [{ role: 'user', content: message.trim().slice(0, 1500) }];
     } else {
       return NextResponse.json(
         { error: 'Please provide a valid message or messages array.' },

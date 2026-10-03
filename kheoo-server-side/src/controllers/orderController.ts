@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import { Order } from '../models/Order';
 import { Product } from '../models/Product';
+import { escapeRegex, isValidEmail, sanitizeText } from '../utils/security';
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -18,38 +19,72 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
       totalAmount,
     } = req.body;
 
-    if (!items || !items.length || !shippingAddress || totalAmount === undefined) {
-      res.status(400).json({ success: false, message: 'Missing required order details' });
+    if (!items || !Array.isArray(items) || items.length === 0 || !shippingAddress) {
+      res.status(400).json({ success: false, message: 'Missing required order items or shipping details' });
       return;
     }
 
-    const orderNumber = `KHEOO-WEB-${Date.now().toString().slice(-6)}-${Math.floor(Math.random() * 1000)}`;
+    const cleanEmail = typeof guestEmail === 'string' && isValidEmail(guestEmail)
+      ? guestEmail.trim().toLowerCase()
+      : 'guest@kheoo.com';
+
+    const cleanName = sanitizeText(guestName || 'Online Shopper').slice(0, 100);
+
+    // Validate and sanitize order items
+    const validatedItems = [];
+    let calculatedSubtotal = 0;
+
+    for (const item of items) {
+      const pId = item.productId || item.id;
+      const quantity = Math.max(1, Math.min(50, parseInt(item.quantity, 10) || 1));
+      let price = parseFloat(item.price);
+
+      // Verify price against product in database if ID is valid
+      if (pId && mongoose.Types.ObjectId.isValid(pId)) {
+        const dbProduct = await Product.findById(pId);
+        if (dbProduct) {
+          price = dbProduct.price;
+        }
+      }
+
+      calculatedSubtotal += price * quantity;
+
+      validatedItems.push({
+        productId: pId || '',
+        productName: sanitizeText(item.name || item.productName || 'Streetwear Item').slice(0, 150),
+        price: Math.max(0, price),
+        quantity,
+        size: sanitizeText(item.size || 'L').slice(0, 10),
+        color: sanitizeText(item.color || 'Black').slice(0, 30),
+        image: typeof item.image === 'string' ? item.image : item.images?.[0] || '',
+      });
+    }
+
+    const orderNumber = `KHEOO-WEB-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`;
+
+    const numSubtotal = Math.max(0, parseFloat(subtotal) || calculatedSubtotal);
+    const numTax = Math.max(0, parseFloat(tax) || 0);
+    const numShipping = Math.max(0, parseFloat(shippingFee) || 0);
+    const numDiscount = Math.max(0, parseFloat(discount) || 0);
+    const numTotal = Math.max(0, parseFloat(totalAmount) || (numSubtotal + numTax + numShipping - numDiscount));
 
     const order = await Order.create({
       orderNumber,
-      guestEmail: guestEmail || 'guest@kheoo.com',
-      guestName: guestName || 'Online Shopper',
-      customerName: guestName,
+      guestEmail: cleanEmail,
+      guestName: cleanName,
+      customerName: cleanName,
       customerPhone: '',
-      shippingAddress: typeof shippingAddress === 'string' ? shippingAddress : JSON.stringify(shippingAddress),
+      shippingAddress: typeof shippingAddress === 'string' ? sanitizeText(shippingAddress) : JSON.stringify(shippingAddress),
       paymentMethod: paymentMethod || 'Cash On Delivery',
       paymentStatus: paymentMethod === 'Stripe Card' || paymentMethod === 'SSLCommerz' ? 'PAID' : 'PENDING',
       orderSource: 'ONLINE',
-      subtotal: parseFloat(subtotal),
-      tax: parseFloat(tax),
-      shippingFee: parseFloat(shippingFee),
-      discount: parseFloat(discount),
-      totalAmount: parseFloat(totalAmount),
+      subtotal: numSubtotal,
+      tax: numTax,
+      shippingFee: numShipping,
+      discount: numDiscount,
+      totalAmount: numTotal,
       status: 'PENDING',
-      items: items.map((item: any) => ({
-        productId: item.productId || item.id,
-        productName: item.name || item.productName,
-        price: parseFloat(item.price),
-        quantity: parseInt(item.quantity, 10),
-        size: item.size || 'L',
-        color: item.color || 'Black',
-        image: item.image || item.images?.[0] || '',
-      })),
+      items: validatedItems,
     });
 
     // Deduct stock for ordered items
@@ -201,13 +236,14 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
       query.status = status;
     }
 
-    if (search && typeof search === 'string') {
+    if (search && typeof search === 'string' && search.trim().length > 0) {
+      const safeSearch = escapeRegex(search.trim().slice(0, 100));
       query.$or = [
-        { orderNumber: { $regex: search, $options: 'i' } },
-        { guestName: { $regex: search, $options: 'i' } },
-        { customerName: { $regex: search, $options: 'i' } },
-        { customerPhone: { $regex: search, $options: 'i' } },
-        { guestEmail: { $regex: search, $options: 'i' } },
+        { orderNumber: { $regex: safeSearch, $options: 'i' } },
+        { guestName: { $regex: safeSearch, $options: 'i' } },
+        { customerName: { $regex: safeSearch, $options: 'i' } },
+        { customerPhone: { $regex: safeSearch, $options: 'i' } },
+        { guestEmail: { $regex: safeSearch, $options: 'i' } },
       ];
     }
 

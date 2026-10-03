@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../models/User';
+import { isValidEmail, sanitizeText } from '../utils/security';
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -10,17 +11,31 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (!isValidEmail(email)) {
+      res.status(400).json({ success: false, message: 'Please provide a valid email address' });
+      return;
+    }
+
+    if (typeof password !== 'string' || password.length < 6) {
+      res.status(400).json({ success: false, message: 'Password must be at least 6 characters long' });
+      return;
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = sanitizeText(name).slice(0, 80);
+    const cleanPhone = sanitizeText(phone || '').slice(0, 20);
+
+    const existingUser = await User.findOne({ email: cleanEmail });
     if (existingUser) {
       res.status(409).json({ success: false, message: 'An account with this email already exists' });
       return;
     }
 
     const newUser = await User.create({
-      name,
-      email: email.toLowerCase(),
-      password, // In production you can hash with bcrypt
-      phone: phone || '',
+      name: cleanName,
+      email: cleanEmail,
+      password: String(password), // In production hashed with bcrypt
+      phone: cleanPhone,
       role: 'customer',
     });
 

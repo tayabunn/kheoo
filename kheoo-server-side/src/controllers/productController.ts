@@ -1,42 +1,45 @@
 import { Request, Response } from 'express';
 import { Product } from '../models/Product';
 import { Category } from '../models/Category';
+import { escapeRegex } from '../utils/security';
 
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const { category, search, size, isNew, isBestSeller, isTrending, sort, page = '1', limit = '12' } = req.query;
 
-    const pageNum = parseInt(page as string, 10) || 1;
-    const limitNum = parseInt(limit as string, 10) || 12;
+    const pageNum = Math.max(1, parseInt(page as string, 10) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit as string, 10) || 12));
     const skip = (pageNum - 1) * limitNum;
 
     const filter: any = {};
 
     if (category && typeof category === 'string') {
-      const catObj = await Category.findOne({ slug: category.toLowerCase() });
+      const sanitizedCat = category.trim().toLowerCase();
+      const catObj = await Category.findOne({ slug: sanitizedCat });
       if (catObj) {
         filter.categoryId = catObj.slug;
       } else {
-        filter.categoryId = category.toLowerCase();
+        filter.categoryId = sanitizedCat;
       }
     }
 
-    if (search && typeof search === 'string') {
+    if (search && typeof search === 'string' && search.trim().length > 0) {
+      const safeSearch = escapeRegex(search.trim().slice(0, 100));
       filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { slug: { $regex: search, $options: 'i' } },
-        { 'variants.sku': { $regex: search, $options: 'i' } },
+        { name: { $regex: safeSearch, $options: 'i' } },
+        { description: { $regex: safeSearch, $options: 'i' } },
+        { slug: { $regex: safeSearch, $options: 'i' } },
+        { 'variants.sku': { $regex: safeSearch, $options: 'i' } },
       ];
     }
-
 
     if (isNew === 'true') filter.isNewProduct = true;
     if (isBestSeller === 'true') filter.isBestSeller = true;
     if (isTrending === 'true') filter.isTrending = true;
 
     if (size && typeof size === 'string') {
-      filter['variants.size'] = { $regex: new RegExp(`^${size}$`, 'i') };
+      const safeSize = escapeRegex(size.trim().slice(0, 20));
+      filter['variants.size'] = { $regex: new RegExp(`^${safeSize}$`, 'i') };
     }
 
     let sortOptions: any = { createdAt: -1 };
