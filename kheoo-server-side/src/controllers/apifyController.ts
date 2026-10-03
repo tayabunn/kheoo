@@ -36,10 +36,11 @@ export const runApifyActorSync = async (req: Request, res: Response) => {
 
 export const getApifyDataset = async (req: Request, res: Response) => {
   try {
-    const { datasetId } = req.params;
+    const rawDatasetId = req.params.datasetId;
+    const datasetId = Array.isArray(rawDatasetId) ? rawDatasetId[0] : rawDatasetId;
     const { limit, offset, clean, token } = req.query;
 
-    if (!datasetId) {
+    if (!datasetId || typeof datasetId !== 'string') {
       return res.status(400).json({ success: false, error: 'datasetId is required' });
     }
 
@@ -62,10 +63,11 @@ export const getApifyDataset = async (req: Request, res: Response) => {
 
 export const syncDatasetToProducts = async (req: Request, res: Response) => {
   try {
-    const { datasetId } = req.params;
+    const rawDatasetId = req.params.datasetId;
+    const datasetId = Array.isArray(rawDatasetId) ? rawDatasetId[0] : rawDatasetId;
     const { defaultCategory = 'anime' } = req.body;
 
-    if (!datasetId) {
+    if (!datasetId || typeof datasetId !== 'string') {
       return res.status(400).json({ success: false, error: 'datasetId is required' });
     }
 
