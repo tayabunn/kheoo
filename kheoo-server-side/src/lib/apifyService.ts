@@ -24,16 +24,14 @@ export interface ApifyActorRunResponse {
   usageTotalUsd?: number;
 }
 
-const DEFAULT_APIFY_TOKEN = 'apify_api_WpypwJFXOqbM3VxolfvoyRFAr4puik0u7zGR';
-
 export class ApifyService {
   private static baseUrl = 'https://api.apify.com/v2';
 
   private static getHeaders(token?: string) {
-    const apiToken = token || process.env.APIFY_API_TOKEN || DEFAULT_APIFY_TOKEN;
+    const apiToken = (token || process.env.APIFY_API_TOKEN || '').trim();
     return {
       'Content-Type': 'application/json',
-      ...(apiToken ? { 'Authorization': `Bearer ${apiToken.trim()}` } : {}),
+      ...(apiToken ? { 'Authorization': `Bearer ${apiToken}` } : {}),
     };
   }
 

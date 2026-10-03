@@ -17,11 +17,6 @@ export interface AiResponse {
   fallbackChain: string[];
 }
 
-const DEFAULT_GROQ_KEY = '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';
-const DEFAULT_MISTRAL_KEY = 'mstrl_e4PjL6bMVk0aqwkrE0FYEeyMCG66ykvZ_2L5ZDI';
-const DEFAULT_GEMINI_KEY = 'AQ.Ab8RN6Lqw-Y8PNr2KldS5VADRk6_ZT8gfCUaV3j821qG6upjSQ';
-const DEFAULT_META_KEY = 'LLM_958275133996807_O9JYT9EX16cTD1Xw1rPXBwCxKIk';
-
 const SYSTEM_PROMPT = `
 You are the official KHEOO Fashion & Shopping AI Stylist and Customer Support Specialist for "KHEOO" (Dhaka, Bangladesh).
 Brand Identity: KHEOO is an ultra-premium streetwear brand specializing in 240+ GSM heavyweight 100% combed cotton drop shoulder oversized T-shirts inspired by Anime (Naruto, Gojo JJK, Attack on Titan, One Piece Gear 5, Demon Slayer, DBZ), Marvel (Spider-Man Symbiote), and DC (Batman Dark Knight Gotham).
@@ -51,48 +46,54 @@ async function fetchWithTimeout(url: string, options: RequestInit, timeoutMs = 7
  * 1. GROQ Provider (Priority 1 - Ultra High Speed LPU)
  */
 async function callGroq(messages: ChatMessage[], apiKey: string): Promise<{ content: string; model: string }> {
-  const key = apiKey || DEFAULT_GROQ_KEY;
-  if (!key || key.trim() === '') throw new Error('Groq API Key missing');
+  const key = (apiKey || process.env.GROQ_API_KEY || '').trim();
+  if (!key) throw new Error('Groq API Key missing');
 
-  const model = 'llama-3.3-70b-versatile';
-  const response = await fetchWithTimeout('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key.trim()}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-      temperature: 0.7,
-      max_tokens: 1024,
-    }),
-  }, 6500);
+  // Try llama-3.1-8b-instant or llama-3.3-70b-versatile
+  const modelsToTry = ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile', 'gemma2-9b-it'];
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`Groq error ${response.status}: ${err}`);
+  for (const model of modelsToTry) {
+    try {
+      const response = await fetchWithTimeout('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+          temperature: 0.7,
+          max_tokens: 1024,
+        }),
+      }, 6500);
+
+      if (response.ok) {
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content) return { content, model };
+      }
+    } catch {
+      // try next model
+    }
   }
 
-  const data = await response.json();
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error('Groq returned empty response');
-  return { content, model };
+  throw new Error('Groq models unavailable');
 }
 
 /**
  * 2. MISTRAL Provider (Priority 2)
  */
 async function callMistral(messages: ChatMessage[], apiKey: string): Promise<{ content: string; model: string }> {
-  const key = apiKey || DEFAULT_MISTRAL_KEY;
-  if (!key || key.trim() === '') throw new Error('Mistral API Key missing');
+  const key = (apiKey || process.env.MISTRAL_API_KEY || '').trim();
+  if (!key) throw new Error('Mistral API Key missing');
 
   const model = 'mistral-small-latest';
   const response = await fetchWithTimeout('https://api.mistral.ai/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key.trim()}`,
+      'Authorization': `Bearer ${key}`,
     },
     body: JSON.stringify({
       model,
@@ -117,10 +118,9 @@ async function callMistral(messages: ChatMessage[], apiKey: string): Promise<{ c
  * 3. GEMINI Provider (Priority 3)
  */
 async function callGemini(messages: ChatMessage[], apiKey: string): Promise<{ content: string; model: string }> {
-  const key = apiKey || DEFAULT_GEMINI_KEY;
-  if (!key || key.trim() === '') throw new Error('Gemini API Key missing');
+  const key = (apiKey || process.env.GEMINI_API_KEY || '').trim();
+  if (!key) throw new Error('Gemini API Key missing');
 
-  const trimmedKey = key.trim();
   const model = 'gemini-1.5-flash';
 
   const contents = messages.map(m => ({
@@ -128,7 +128,7 @@ async function callGemini(messages: ChatMessage[], apiKey: string): Promise<{ co
     parts: [{ text: m.content }],
   }));
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${trimmedKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
   const response = await fetchWithTimeout(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -144,7 +144,7 @@ async function callGemini(messages: ChatMessage[], apiKey: string): Promise<{ co
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${trimmedKey}`,
+        'Authorization': `Bearer ${key}`,
       },
       body: JSON.stringify({
         model: 'gemini-1.5-flash',
@@ -173,15 +173,15 @@ async function callGemini(messages: ChatMessage[], apiKey: string): Promise<{ co
  * 4. META / LLAMA Provider (Priority 4)
  */
 async function callMetaLlama(messages: ChatMessage[], apiKey: string): Promise<{ content: string; model: string }> {
-  const key = apiKey || DEFAULT_META_KEY;
-  if (!key || key.trim() === '') throw new Error('Meta API Key missing');
+  const key = (apiKey || process.env.META_API_KEY || '').trim();
+  if (!key) throw new Error('Meta API Key missing');
 
   const model = 'llama3-70b';
   const response = await fetchWithTimeout('https://api.llama-api.com/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key.trim()}`,
+      'Authorization': `Bearer ${key}`,
     },
     body: JSON.stringify({
       model,
@@ -252,69 +252,77 @@ export async function executeAiQueryWithFallback(messages: ChatMessage[]): Promi
   const startTime = Date.now();
   const fallbackChain: string[] = [];
 
-  const groqKey = process.env.GROQ_API_KEY || DEFAULT_GROQ_KEY;
-  const mistralKey = process.env.MISTRAL_API_KEY || DEFAULT_MISTRAL_KEY;
-  const geminiKey = process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY;
-  const metaKey = process.env.META_API_KEY || DEFAULT_META_KEY;
+  const groqKey = process.env.GROQ_API_KEY || '';
+  const mistralKey = process.env.MISTRAL_API_KEY || '';
+  const geminiKey = process.env.GEMINI_API_KEY || '';
+  const metaKey = process.env.META_API_KEY || '';
 
   // 1. GROQ (Speed First ~500+ tokens/sec)
-  try {
-    fallbackChain.push('Groq');
-    const result = await callGroq(messages, groqKey);
-    return {
-      content: result.content,
-      provider: 'Groq',
-      model: result.model,
-      latencyMs: Date.now() - startTime,
-      fallbackChain,
-    };
-  } catch (err: any) {
-    console.warn(`[Client-AI-Fallback] Groq failed: ${err?.message || err}. Falling back to Mistral...`);
+  if (groqKey) {
+    try {
+      fallbackChain.push('Groq');
+      const result = await callGroq(messages, groqKey);
+      return {
+        content: result.content,
+        provider: 'Groq',
+        model: result.model,
+        latencyMs: Date.now() - startTime,
+        fallbackChain,
+      };
+    } catch (err: any) {
+      console.warn(`[Client-AI-Fallback] Groq failed: ${err?.message || err}. Falling back to Mistral...`);
+    }
   }
 
   // 2. MISTRAL
-  try {
-    fallbackChain.push('Mistral');
-    const result = await callMistral(messages, mistralKey);
-    return {
-      content: result.content,
-      provider: 'Mistral',
-      model: result.model,
-      latencyMs: Date.now() - startTime,
-      fallbackChain,
-    };
-  } catch (err: any) {
-    console.warn(`[Client-AI-Fallback] Mistral failed: ${err?.message || err}. Falling back to Gemini...`);
+  if (mistralKey) {
+    try {
+      fallbackChain.push('Mistral');
+      const result = await callMistral(messages, mistralKey);
+      return {
+        content: result.content,
+        provider: 'Mistral',
+        model: result.model,
+        latencyMs: Date.now() - startTime,
+        fallbackChain,
+      };
+    } catch (err: any) {
+      console.warn(`[Client-AI-Fallback] Mistral failed: ${err?.message || err}. Falling back to Gemini...`);
+    }
   }
 
   // 3. GEMINI
-  try {
-    fallbackChain.push('Gemini');
-    const result = await callGemini(messages, geminiKey);
-    return {
-      content: result.content,
-      provider: 'Gemini',
-      model: result.model,
-      latencyMs: Date.now() - startTime,
-      fallbackChain,
-    };
-  } catch (err: any) {
-    console.warn(`[Client-AI-Fallback] Gemini failed: ${err?.message || err}. Falling back to Meta LLaMA...`);
+  if (geminiKey) {
+    try {
+      fallbackChain.push('Gemini');
+      const result = await callGemini(messages, geminiKey);
+      return {
+        content: result.content,
+        provider: 'Gemini',
+        model: result.model,
+        latencyMs: Date.now() - startTime,
+        fallbackChain,
+      };
+    } catch (err: any) {
+      console.warn(`[Client-AI-Fallback] Gemini failed: ${err?.message || err}. Falling back to Meta LLaMA...`);
+    }
   }
 
   // 4. META / LLAMA
-  try {
-    fallbackChain.push('Meta');
-    const result = await callMetaLlama(messages, metaKey);
-    return {
-      content: result.content,
-      provider: 'Meta',
-      model: result.model,
-      latencyMs: Date.now() - startTime,
-      fallbackChain,
-    };
-  } catch (err: any) {
-    console.warn(`[Client-AI-Fallback] Meta failed: ${err?.message || err}. Falling back to Smart Knowledge Base...`);
+  if (metaKey) {
+    try {
+      fallbackChain.push('Meta');
+      const result = await callMetaLlama(messages, metaKey);
+      return {
+        content: result.content,
+        provider: 'Meta',
+        model: result.model,
+        latencyMs: Date.now() - startTime,
+        fallbackChain,
+      };
+    } catch (err: any) {
+      console.warn(`[Client-AI-Fallback] Meta failed: ${err?.message || err}. Falling back to Smart Knowledge Base...`);
+    }
   }
 
   // 5. Intelligent Local Knowledge Fallback
