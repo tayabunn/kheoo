@@ -551,76 +551,75 @@ export const AiAssistantWidget: React.FC = () => {
 
   return (
     <>
-      {/* Floating Launcher Trigger (Mobile responsive positioning & sizing) */}
-      <div className={`fixed z-50 ${isOpen ? 'inset-x-2 bottom-2 sm:inset-x-auto sm:bottom-10 sm:right-10 flex flex-col items-end' : 'bottom-4 right-4 sm:bottom-10 sm:right-10'}`}>
-        <AnimatePresence mode="wait">
-          {!isOpen && (
-            <motion.button
-              initial={{ scale: 0.82, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.82, opacity: 0 }}
-              transition={{ type: 'spring', damping: 24, stiffness: 340 }}
-              onClick={() => setIsOpen(true)}
+      {/* Floating Launcher Trigger */}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.button
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            onClick={() => setIsOpen(true)}
+            style={{ borderRadius: '9999px' }}
+            className="fixed bottom-4 right-4 sm:bottom-10 sm:right-10 z-50 flex items-center justify-center w-13 h-13 sm:w-15 sm:h-15 bg-black text-white border-2 border-zinc-700 ring-2 ring-[#a3d633]/60 ring-offset-2 ring-offset-black cursor-pointer select-none"
+            aria-label="Open KHEOO AI Stylist Assistant"
+          >
+            {/* Stable subtle ambient backlight aura */}
+            <span
               style={{ borderRadius: '9999px' }}
-              className="relative flex items-center justify-center w-13 h-13 sm:w-15 sm:h-15 bg-black text-white border-2 border-zinc-700 ring-2 ring-[#a3d633]/60 ring-offset-2 ring-offset-black cursor-pointer select-none"
-              aria-label="Open KHEOO AI Stylist Assistant"
+              className="absolute -inset-1 bg-gradient-to-r from-[#a3d633]/20 via-transparent to-[#a3d633]/20 blur-sm pointer-events-none"
+            />
+
+            {/* Centered pure white KHEOO Logo */}
+            <Image
+              src="/assets/logo/Kheoo-logo.png"
+              alt="KHEOO Logo"
+              width={36}
+              height={36}
+              className="w-7 h-7 sm:w-9 sm:h-9 object-contain brightness-0 invert relative z-10"
+            />
+
+            {/* Stable #a3d633 Online Status Micro-Badge */}
+            <span
+              style={{ borderRadius: '9999px' }}
+              className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-black border-2 border-zinc-900 flex items-center justify-center z-20"
+              title="AI Stylist Online"
             >
-              {/* Stable subtle ambient backlight aura */}
               <span
                 style={{ borderRadius: '9999px' }}
-                className="absolute -inset-1 bg-gradient-to-r from-[#a3d633]/20 via-transparent to-[#a3d633]/20 blur-sm pointer-events-none"
+                className="w-1.5 h-1.5 bg-[#a3d633] inline-block"
               />
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-              {/* Centered pure white KHEOO Logo */}
-              <Image
-                src="/assets/logo/Kheoo-logo.png"
-                alt="KHEOO Logo"
-                width={36}
-                height={36}
-                className="w-7 h-7 sm:w-9 sm:h-9 object-contain brightness-0 invert relative z-10"
-              />
-
-              {/* Stable #a3d633 Online Status Micro-Badge */}
-              <span
-                style={{ borderRadius: '9999px' }}
-                className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-black border-2 border-zinc-900 flex items-center justify-center z-20"
-                title="AI Stylist Online"
-              >
-                <span
-                  style={{ borderRadius: '9999px' }}
-                  className="w-1.5 h-1.5 bg-[#a3d633] inline-block"
-                />
-              </span>
-            </motion.button>
-          )}
-        </AnimatePresence>
-
-        {/* AI Chatbot Floating Window (Full Mobile Viewport Fit) with smooth spring expansion */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.88, y: 28, transformOrigin: 'bottom right' }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: 0,
-                height: isMinimized ? '58px' : 'min(640px, calc(100dvh - 16px))',
-              }}
-              exit={{
-                opacity: 0,
-                scale: 0.88,
-                y: 24,
-                transition: { duration: 0.22, ease: [0.32, 0.72, 0, 1] },
-              }}
-              transition={{
-                type: 'spring',
-                damping: 27,
-                stiffness: 290,
-                mass: 0.85,
-              }}
-              style={{ borderRadius: '16px' }}
-              className="w-full sm:w-[460px] md:w-[490px] max-w-[520px] bg-[#0c0c10] border border-zinc-800 flex flex-col overflow-hidden text-zinc-200 font-sans z-50 relative shadow-2xl origin-bottom-right"
-            >
+      {/* AI Chatbot Floating Window */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 28, transformOrigin: 'bottom right' }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              height: isMinimized ? '58px' : 'min(640px, calc(100dvh - 16px))',
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.88,
+              y: 20,
+              transition: { duration: 0.2, ease: [0.32, 0.72, 0, 1] },
+            }}
+            transition={{
+              type: 'spring',
+              damping: 27,
+              stiffness: 290,
+              mass: 0.85,
+            }}
+            style={{ borderRadius: '16px' }}
+            className="fixed inset-x-2 bottom-2 sm:inset-x-auto sm:bottom-10 sm:right-10 z-50 w-auto sm:w-[460px] md:w-[490px] max-w-[520px] bg-[#0c0c10] border border-zinc-800 flex flex-col overflow-hidden text-zinc-200 font-sans shadow-2xl origin-bottom-right"
+          >
               {/* Header */}
               <div className="px-3.5 py-3 sm:px-5 sm:py-3.5 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between select-none shrink-0">
                 <div className="flex items-center gap-2.5">
@@ -870,7 +869,6 @@ export const AiAssistantWidget: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
     </>
   );
 };
