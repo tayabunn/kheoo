@@ -24,8 +24,24 @@ export const Header: React.FC = () => {
   const isProductsActive = pathname === '/products' || pathname.startsWith('/shop');
   const isCategoriesActive = pathname.startsWith('/categories');
 
+  // Close popup menu on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
+
+  // Close menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-zinc-200 text-black w-full max-w-full overflow-hidden">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-zinc-200 text-black w-full max-w-full relative">
       <div className="w-full px-4 sm:px-6 md:px-8 lg:w-[90%] lg:px-0 mx-auto">
         <div className="flex items-center justify-between h-16 sm:h-18 lg:h-[76px]">
           {/* Left: Logo & Primary 2 Navigation Tabs (Matching Image 1 reference) */}
@@ -131,146 +147,171 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer with smooth slide & expand */}
+      {/* Mobile Floating Popup Menu with Backdrop */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:hidden bg-white border-b border-zinc-200 overflow-hidden"
-          >
-            <div className="px-4 sm:px-5 py-5 space-y-4 sm:space-y-5 font-mono text-xs text-black max-h-[85vh] overflow-y-auto">
-              {/* Quick Action Cards: Cart & Wishlist */}
-              <div className="grid grid-cols-2 gap-3 pb-3 border-b border-zinc-200">
-                {/* Cart Button */}
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    openCart();
-                  }}
-                  className="flex items-center justify-between p-3.5 bg-black text-white font-bold text-xs uppercase transition-all active:scale-98 shadow-sm border border-black cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Bag / Cart</span>
-                  </div>
-                  <span className="bg-white text-black px-2 py-0.5 text-[11px] font-black rounded-none">
-                    {totalCartCount}
+          <>
+            {/* Subtle Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="lg:hidden fixed inset-0 top-16 sm:top-18 bg-black/60 backdrop-blur-xs z-40"
+              aria-hidden="true"
+            />
+
+            {/* Popup Floating Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: -12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{
+                opacity: 0,
+                scale: 0.94,
+                y: -12,
+                transition: { duration: 0.18, ease: 'easeOut' },
+              }}
+              transition={{
+                type: 'spring',
+                damping: 25,
+                stiffness: 320,
+                mass: 0.8,
+              }}
+              style={{ transformOrigin: 'top right' }}
+              className="lg:hidden absolute top-full inset-x-3 sm:inset-x-6 sm:max-w-md sm:ml-auto mt-2 bg-white border border-zinc-300 shadow-2xl z-50 overflow-hidden"
+            >
+              <div className="p-4 sm:p-5 space-y-4 font-mono text-xs text-black max-h-[calc(100dvh-100px)] overflow-y-auto">
+                {/* Quick Action Cards: Cart & Wishlist */}
+                <div className="grid grid-cols-2 gap-2.5 pb-3 border-b border-zinc-200">
+                  {/* Cart Button */}
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      openCart();
+                    }}
+                    className="flex items-center justify-between p-3 bg-black text-white font-bold text-xs uppercase transition-all active:scale-98 shadow-sm border border-black cursor-pointer"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>Bag / Cart</span>
+                    </div>
+                    <span className="bg-white text-black px-1.5 py-0.5 text-[10px] font-black">
+                      {totalCartCount}
+                    </span>
+                  </button>
+
+                  {/* Wishlist Link */}
+                  <Link
+                    href="/wishlist"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-3 bg-zinc-100 hover:bg-zinc-200 text-black font-bold text-xs uppercase transition-all active:scale-98 border border-zinc-300"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Heart className="w-4 h-4" />
+                      <span>Saved</span>
+                    </div>
+                    <span className="bg-black text-white px-1.5 py-0.5 text-[10px] font-black">
+                      {wishlistItems.length}
+                    </span>
+                  </Link>
+                </div>
+
+                {/* Primary Navigation Tabs */}
+                <div className="grid grid-cols-2 gap-2 pb-3 border-b border-zinc-200">
+                  <Link
+                    href="/products"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`p-2.5 text-center uppercase font-black tracking-wider transition-colors border ${
+                      isProductsActive
+                        ? 'bg-black text-white border-black'
+                        : 'bg-zinc-100 text-zinc-800 border-zinc-200 hover:bg-zinc-200'
+                    }`}
+                  >
+                    Products
+                  </Link>
+                  <Link
+                    href="/categories"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`p-2.5 text-center uppercase font-black tracking-wider transition-colors border ${
+                      isCategoriesActive
+                        ? 'bg-black text-white border-black'
+                        : 'bg-zinc-100 text-zinc-800 border-zinc-200 hover:bg-zinc-200'
+                    }`}
+                  >
+                    Categories
+                  </Link>
+                </div>
+
+                {/* Quick Filters / Subcategories */}
+                <div className="space-y-1 font-mono uppercase text-xs">
+                  <span className="text-[10px] font-bold text-zinc-400 tracking-widest px-2 pb-1 block">
+                    FILTER COLLECTIONS
                   </span>
-                </button>
+                  <Link
+                    href="/shop?category=anime"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-2 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+                  >
+                    <span>Anime Streetwear</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </Link>
+                  <Link
+                    href="/shop?category=marvel"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-2 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+                  >
+                    <span>Marvel Collection</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </Link>
+                  <Link
+                    href="/shop?category=dc"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-2 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+                  >
+                    <span>DC Comics Series</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </Link>
+                  <Link
+                    href="/shop?isNew=true"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-2 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
+                  >
+                    <span>🔥 New Drops</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </Link>
+                  <Link
+                    href="/track-order"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-2 px-2 hover:bg-zinc-50 font-bold text-zinc-700 border-b border-zinc-100"
+                  >
+                    <span>Track Order Status</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-2 px-2 hover:bg-zinc-50 font-bold text-zinc-700 border-b border-zinc-100"
+                  >
+                    <span>Contact Support</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
+                  </Link>
+                </div>
 
-                {/* Wishlist Link */}
-                <Link
-                  href="/wishlist"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between p-3.5 bg-zinc-100 hover:bg-zinc-200 text-black font-bold text-xs uppercase transition-all active:scale-98 border border-zinc-300"
-                >
-                  <div className="flex items-center gap-2">
-                    <Heart className="w-4 h-4" />
-                    <span>Saved</span>
-                  </div>
-                  <span className="bg-black text-white px-2 py-0.5 text-[11px] font-black rounded-none">
-                    {wishlistItems.length}
-                  </span>
-                </Link>
+                {/* User Account / Auth Section */}
+                <div className="pt-2">
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full py-2.5 bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-sm"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>Member Sign In / Account</span>
+                  </Link>
+                </div>
               </div>
-
-              {/* Primary Navigation Tabs */}
-              <div className="grid grid-cols-2 gap-2 pb-3 border-b border-zinc-200">
-                <Link
-                  href="/products"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`p-3 text-center uppercase font-black tracking-wider transition-colors border ${
-                    isProductsActive
-                      ? 'bg-black text-white border-black'
-                      : 'bg-zinc-100 text-zinc-800 border-zinc-200 hover:bg-zinc-200'
-                  }`}
-                >
-                  Products
-                </Link>
-                <Link
-                  href="/categories"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`p-3 text-center uppercase font-black tracking-wider transition-colors border ${
-                    isCategoriesActive
-                      ? 'bg-black text-white border-black'
-                      : 'bg-zinc-100 text-zinc-800 border-zinc-200 hover:bg-zinc-200'
-                  }`}
-                >
-                  Categories
-                </Link>
-              </div>
-
-              {/* Quick Filters / Subcategories */}
-              <div className="space-y-1 font-mono uppercase text-xs">
-                <span className="text-[10px] font-bold text-zinc-400 tracking-widest px-2 pb-1 block">
-                  FILTER COLLECTIONS
-                </span>
-                <Link
-                  href="/shop?category=anime"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
-                >
-                  <span>Anime Streetwear</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-                </Link>
-                <Link
-                  href="/shop?category=marvel"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
-                >
-                  <span>Marvel Collection</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-                </Link>
-                <Link
-                  href="/shop?category=dc"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
-                >
-                  <span>DC Comics Series</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-                </Link>
-                <Link
-                  href="/shop?isNew=true"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-800 border-b border-zinc-100"
-                >
-                  <span>🔥 New Drops</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-                </Link>
-                <Link
-                  href="/track-order"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-700 border-b border-zinc-100"
-                >
-                  <span>Track Order Status</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-                </Link>
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between py-2.5 px-2 hover:bg-zinc-50 font-bold text-zinc-700 border-b border-zinc-100"
-                >
-                  <span>Contact Support</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-zinc-400" />
-                </Link>
-              </div>
-
-              {/* User Account / Auth Section */}
-              <div className="pt-2">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-3 bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-sm"
-                >
-                  <User className="w-4 h-4" />
-                  <span>Member Sign In / Account</span>
-                </Link>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </header>
