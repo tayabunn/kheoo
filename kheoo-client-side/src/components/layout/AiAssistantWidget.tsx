@@ -553,12 +553,13 @@ export const AiAssistantWidget: React.FC = () => {
     <>
       {/* Floating Launcher Trigger (Mobile responsive positioning & sizing) */}
       <div className={`fixed z-50 ${isOpen ? 'inset-x-2 bottom-2 sm:inset-x-auto sm:bottom-10 sm:right-10 flex flex-col items-end' : 'bottom-4 right-4 sm:bottom-10 sm:right-10'}`}>
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {!isOpen && (
             <motion.button
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.82, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              exit={{ scale: 0.82, opacity: 0 }}
+              transition={{ type: 'spring', damping: 24, stiffness: 340 }}
               onClick={() => setIsOpen(true)}
               style={{ borderRadius: '9999px' }}
               className="relative flex items-center justify-center w-13 h-13 sm:w-15 sm:h-15 bg-black text-white border-2 border-zinc-700 ring-2 ring-[#a3d633]/60 ring-offset-2 ring-offset-black cursor-pointer select-none"
@@ -594,20 +595,31 @@ export const AiAssistantWidget: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {/* AI Chatbot Floating Window (Full Mobile Viewport Fit) */}
+        {/* AI Chatbot Floating Window (Full Mobile Viewport Fit) with smooth spring expansion */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, scale: 0.88, y: 28, transformOrigin: 'bottom right' }}
               animate={{
                 opacity: 1,
+                scale: 1,
                 y: 0,
                 height: isMinimized ? '58px' : 'min(640px, calc(100dvh - 16px))',
               }}
-              exit={{ opacity: 0, y: 15 }}
-              transition={{ duration: 0.18 }}
+              exit={{
+                opacity: 0,
+                scale: 0.88,
+                y: 24,
+                transition: { duration: 0.22, ease: [0.32, 0.72, 0, 1] },
+              }}
+              transition={{
+                type: 'spring',
+                damping: 27,
+                stiffness: 290,
+                mass: 0.85,
+              }}
               style={{ borderRadius: '16px' }}
-              className="w-full sm:w-[460px] md:w-[490px] max-w-[520px] bg-[#0c0c10] border border-zinc-800 flex flex-col overflow-hidden text-zinc-200 font-sans z-50 relative shadow-2xl"
+              className="w-full sm:w-[460px] md:w-[490px] max-w-[520px] bg-[#0c0c10] border border-zinc-800 flex flex-col overflow-hidden text-zinc-200 font-sans z-50 relative shadow-2xl origin-bottom-right"
             >
               {/* Header */}
               <div className="px-3.5 py-3 sm:px-5 sm:py-3.5 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between select-none shrink-0">
