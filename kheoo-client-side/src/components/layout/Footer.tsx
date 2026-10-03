@@ -53,7 +53,8 @@ export const Footer: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address..."
-                    className="w-full bg-transparent text-white placeholder:text-zinc-500 text-xs sm:text-sm focus:outline-none font-mono"
+                    autoComplete="email"
+                    className="w-full bg-transparent text-white placeholder:text-zinc-500 text-xs sm:text-sm focus:outline-none font-mono selection:bg-zinc-700 selection:text-white"
                   />
                 </div>
                 <button
@@ -198,7 +199,7 @@ export const Footer: React.FC = () => {
                     <Phone className="w-3.5 h-3.5 text-zinc-300" />
                   </div>
                   <a href="tel:+8801711223344" className="hover:text-white transition-colors">
-                    +880 1234-567891
+                    +880 1867-263017
                   </a>
                 </li>
                 <li className="flex items-center gap-2.5">
@@ -259,7 +260,7 @@ export const Footer: React.FC = () => {
 
         {/* Sub-Footer: Clean Copyright & Payment Badges */}
         <div className="pt-6 sm:pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs text-zinc-500 font-mono text-center md:text-left">
-          <p>© {new Date().getFullYear()} KHEOO. All rights reserved. Dhaka, Bangladesh.</p>
+          <p>© {new Date().getFullYear()} KHEOO. All rights reserved. Dhaka, Bangladesh</p>
 
           <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
             <span className="bg-zinc-900/90 border border-zinc-800/80 text-zinc-400 text-[10px] sm:text-[11px] px-2.5 py-1 rounded-lg font-bold">
@@ -270,9 +271,6 @@ export const Footer: React.FC = () => {
             </span>
             <span className="bg-zinc-900/90 border border-zinc-800/80 text-zinc-400 text-[10px] sm:text-[11px] px-2.5 py-1 rounded-lg font-bold">
               Rocket
-            </span>
-            <span className="bg-zinc-900/90 border border-zinc-800/80 text-zinc-400 text-[10px] sm:text-[11px] px-2.5 py-1 rounded-lg font-bold">
-              Visa / Mastercard
             </span>
             <span className="bg-zinc-900/90 border border-zinc-800/80 text-zinc-400 text-[10px] sm:text-[11px] px-2.5 py-1 rounded-lg font-bold">
               Cash on Delivery

@@ -7,6 +7,8 @@ import categoryRoutes from './routes/categoryRoutes';
 import orderRoutes from './routes/orderRoutes';
 import couponRoutes from './routes/couponRoutes';
 import authRoutes from './routes/authRoutes';
+import aiRoutes from './routes/aiRoutes';
+import apifyRoutes from './routes/apifyRoutes';
 
 dotenv.config();
 
@@ -25,6 +27,8 @@ app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/orders', orderRoutes);
 app.use('/api/v1/coupons', couponRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/ai', aiRoutes);
+app.use('/api/v1/apify', apifyRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.json({
