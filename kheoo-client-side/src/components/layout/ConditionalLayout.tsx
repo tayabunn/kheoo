@@ -7,6 +7,7 @@ import { Footer } from './Footer';
 import { CartDrawer } from './CartDrawer';
 import { SearchDrawer } from './SearchDrawer';
 import { QuickViewModal } from '../product/QuickViewModal';
+import { AiAssistantWidget } from './AiAssistantWidget';
 
 export const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
@@ -16,7 +17,6 @@ export const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ chi
     return <div className="min-h-screen bg-zinc-50 text-black font-mono antialiased">{children}</div>;
   }
 
-
   return (
     <>
       <Header />
@@ -25,6 +25,7 @@ export const ConditionalLayout: React.FC<{ children: React.ReactNode }> = ({ chi
       <CartDrawer />
       <SearchDrawer />
       <QuickViewModal />
+      <AiAssistantWidget />
     </>
   );
 };
