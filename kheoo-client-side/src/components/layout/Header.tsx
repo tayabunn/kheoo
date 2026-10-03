@@ -162,14 +162,15 @@ export const Header: React.FC = () => {
               aria-hidden="true"
             />
 
-            {/* Popup Floating Card */}
+            {/* Popup Floating Card - Perfectly Centered */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: -12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.94, y: -10, x: '-50%' }}
+              animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
               exit={{
                 opacity: 0,
                 scale: 0.94,
-                y: -12,
+                y: -10,
+                x: '-50%',
                 transition: { duration: 0.18, ease: 'easeOut' },
               }}
               transition={{
@@ -178,8 +179,8 @@ export const Header: React.FC = () => {
                 stiffness: 320,
                 mass: 0.8,
               }}
-              style={{ transformOrigin: 'top right' }}
-              className="lg:hidden absolute top-full inset-x-3 sm:inset-x-6 sm:max-w-md sm:ml-auto mt-2 bg-white border border-zinc-300 shadow-2xl z-50 overflow-hidden"
+              style={{ transformOrigin: 'top center' }}
+              className="lg:hidden fixed top-[68px] sm:top-[76px] left-1/2 w-[calc(100%-24px)] max-w-[440px] bg-white border border-zinc-300 shadow-2xl z-50 overflow-hidden"
             >
               <div className="p-4 sm:p-5 space-y-4 font-mono text-xs text-black max-h-[calc(100dvh-100px)] overflow-y-auto">
                 {/* Quick Action Cards: Cart & Wishlist */}
