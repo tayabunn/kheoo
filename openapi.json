@@ -1,0 +1,18 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "title": "Apify API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "description": "Apify API v2 OpenAPI Specification for KHEOO E-commerce Platform Integration",
+    "version": "v2-2026-09-10T091137Z"
+  },
+  "servers": [
+    {
+      "url": "https://api.apify.com",
+      "variables": {}
+    }
+  ]
+}
